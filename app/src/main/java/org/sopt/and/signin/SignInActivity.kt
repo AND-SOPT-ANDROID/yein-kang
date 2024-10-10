@@ -142,10 +142,14 @@ class SignInActivity : ComponentActivity() {
         }
     }
 
-    private fun isValidatedSignIn(id: String, password: String): Boolean{
+    private fun isValidatedSignIn(id: String, password: String): Boolean {
+        if (id.isBlank() || password.isBlank()) {
+            return false
+        }
         return signUpState.let {
             it.value.id == id && it.value.password == password
         }
     }
+
 
 }
