@@ -1,3 +1,50 @@
 <resources>
     <string name="app_name">AND-ANDROID</string>
+
+    <string name="text_field_hide">hide</string>
+    <string name="text_field_show">show</string>
+    <string name="icon_close">닫기</string>
+    <string name="icon_info">정보</string>
+    <string name="icon_arrow_right">이동</string>
+    <string name="icon_notification">알림</string>
+    <string name="icon_settings">설정</string>
+
+    <string name="signup_top_bar_title">회원가입</string>
+    <string name="signup_intro_text">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>
+    <string name="signup_login_hint">wavve@example.com</string>
+    <string name="signup_login_guide">로그인, 비밀번호 찾기, 알림에 사용되니 정확한 이메일을 입력해주세요.</string>
+    <string name="signup_password_hint">Wavve 비밀번호 설정</string>
+    <string name="signup_password_guide">비밀번호는 8~20자 이내로 영문 대소문자, 숫자, 특수문자 중 3가지 이상 혼용하여 입력해 주세요.</string>
+    <string name="signup_other_service_text">또는 다른 서비스 계정으로 가입</string>
+    <string name="signup_other_service_guide">"SNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기\n존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고\n하세요."</string>
+    <string name="signup_button_text">wavve 회원가입</string>
+    <string name="signup_success_text">회원가입을 완료했습니다.</string>
+    <string name="signup_failure_email_text">이메일 형식이 올바르지 않습니다.</string>
+    <string name="signup_failure_password_text">비밀번호 형식이 올바르지 않습니다.</string>
+    <string name="signup_failure_text">회원가입이 실패했습니다.</string>
+
+    <string name="signin_login_hint">이메일 주소 또는 아이디</string>
+    <string name="signin_password_hint">비밀번호</string>
+    <string name="signin_login_text">로그인</string>
+    <string name="signin_find_id_text">아이디 찾기</string>
+    <string name="signin_reset_password_text">비밀번호 재설정</string>
+    <string name="signin_signup_text">회원가입</string>
+    <string name="signin_divider_text">|</string>
+    <string name="signin_other_service_text">또는 다른 서비스 계정으로 가입</string>
+    <string name="signin_other_service_guide">"SNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다. 기\n존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고하세요."</string>
+    <string name="signin_success_text">로그인에 성공했습니다.</string>
+    <string name="signin_failure_text">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+    <string name="signin_text_sns_guide">"SNS계정을 간편하게 가입하여 서비스를 이용하실 수 있습니다.\n\t기존 POOQ 계정 또는 Wavve 계정과는 연동되지 않으니 이용에 참고하세요."</string>
+
+    <string name="my_profile_image">내 프로필 이미지</string>
+    <string name="my_buy_text">구매하기</string>
+    <string name="my_first_buy_text">첫 결제 시 첫 달 100원!</string>
+    <string name="my_ticket_text">현재 보유하신 이용권이 없습니다.</string>
+    <string name="my_watch_contents_text">전체 시청 내역</string>
+    <string name="my_watch_contents_empty_text">시청 내역이 없어요.</string>
+    <string name="my_like_contents_text">관심 프로그램</string>
+    <string name="my_like_contents_empty_text">관심 프로그램이 없어요.</string>
+    <string name="my_email_error_text">이메일을 불러올 수 없습니다.</string>
+    <string name="my_error_text">오류로 인해 데이터를 불러올 수 없습니다.</string>
+
 </resources>
