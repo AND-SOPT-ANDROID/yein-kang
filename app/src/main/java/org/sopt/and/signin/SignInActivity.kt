@@ -125,6 +125,12 @@ class SignInActivity : ComponentActivity() {
                         snackBarMessage = getString(R.string.signin_success_text)
                     )
 
+                    Intent(this, MyActivity::class.java).apply {
+                        this.putExtra("email", state.value.id)
+                        this.putExtra("snackBarMessage", state.value.snackBarMessage)
+                        startActivity(this)
+                        finish()
+                    }
 
                 } else {
                     state.value = state.value.copy(
