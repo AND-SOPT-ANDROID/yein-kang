@@ -28,6 +28,7 @@ import org.sopt.and.component.WavveTextField
 import org.sopt.and.signin.model.SignInState
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.WavveColor
 
 @Composable
 fun SignInScreen(
@@ -71,7 +72,7 @@ fun SignInScreen(
                 onSignInButtonClick()
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF1453FA)
+                containerColor = WavveColor
             )
         ) {
             Text(

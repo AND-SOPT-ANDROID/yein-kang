@@ -17,6 +17,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
+import org.sopt.and.ui.theme.FacebookColor
+import org.sopt.and.ui.theme.KakaoColor
+import org.sopt.and.ui.theme.NaverColor
+import org.sopt.and.ui.theme.TworldColor
 
 @Composable
 fun OtherServiceIconRow(
@@ -31,7 +35,7 @@ fun OtherServiceIconRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFFFEC00))
+                .background(KakaoColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.kakao_icon),
@@ -46,7 +50,7 @@ fun OtherServiceIconRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF3617CE))
+                .background(TworldColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.tworld_icon),
@@ -61,7 +65,7 @@ fun OtherServiceIconRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF23B909))
+                .background(NaverColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.naver_icon),
@@ -76,7 +80,7 @@ fun OtherServiceIconRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF3B5998))
+                .background(FacebookColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.facebook_icon),
