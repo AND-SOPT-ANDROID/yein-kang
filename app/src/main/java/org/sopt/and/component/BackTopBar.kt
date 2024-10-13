@@ -25,14 +25,15 @@ import org.sopt.and.ui.theme.FirstGrey
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BackTopBar(
-    @DrawableRes titleImg:  Int,
+    @DrawableRes titleImg: Int,
     onButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
     containerColor: Color = FirstGrey,
     titleContentColor: Color = Color.White,
-    navigationIconContentColor: Color = Color.White
+    navigationIconContentColor: Color = Color.White,
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         title = {
             Image(

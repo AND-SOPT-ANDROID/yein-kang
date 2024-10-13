@@ -20,9 +20,9 @@ import org.sopt.and.ui.theme.ThirdGrey
 fun PairTextView(
     title: String,
     subTitle: String,
+    modifier: Modifier = Modifier,
     titleColor: Color = ThirdGrey,
     subTitleColor: Color = Color.White,
-    modifier: Modifier
 ) {
     Column(
         modifier = modifier

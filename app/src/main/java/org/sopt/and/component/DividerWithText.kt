@@ -18,7 +18,7 @@ import org.sopt.and.ui.theme.ThirdGrey
 @Composable
 fun DividerWithText(
     text: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ){
     Row(
         modifier = modifier

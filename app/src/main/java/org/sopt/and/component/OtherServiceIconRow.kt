@@ -24,7 +24,7 @@ import org.sopt.and.ui.theme.TworldColor
 
 @Composable
 fun OtherServiceIconRow(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier

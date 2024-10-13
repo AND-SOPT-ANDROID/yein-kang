@@ -38,7 +38,7 @@ fun SignUpScreen(
     onIdChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignUpButtonClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize()

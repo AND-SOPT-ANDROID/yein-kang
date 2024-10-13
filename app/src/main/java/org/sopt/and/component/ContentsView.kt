@@ -24,9 +24,9 @@ import org.sopt.and.ui.theme.ThirdGrey
 fun ContentsView(
     title: String,
     contentText: String,
+    modifier: Modifier = Modifier,
     titleColor: Color = Color.White,
     contentTextColor: Color = ThirdGrey,
-    modifier: Modifier
 ) {
     Column(
         modifier = modifier

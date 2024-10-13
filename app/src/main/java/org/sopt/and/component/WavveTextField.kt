@@ -27,15 +27,15 @@ import org.sopt.and.ui.theme.ThirdGrey
 fun WavveTextField(
     value: String,
     hint: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     valueColor: Color = Color.White,
     hintColor: Color = ThirdGrey,
-    onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         imeAction = ImeAction.Next
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     actionButton: @Composable () -> Unit = {},
-    modifier: Modifier
 ) {
     Box(
         modifier = modifier

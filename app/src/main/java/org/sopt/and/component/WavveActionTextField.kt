@@ -21,7 +21,7 @@ fun WavveActionTextField(
     value: String,
     hint: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ){
     var isShowPassword by remember { mutableStateOf(false) }
 

@@ -39,7 +39,7 @@ fun SignInScreen(
     onFindInButtonClick: () -> Unit,
     onPasswordResetButtonClick: () -> Unit,
     onSignUpButtonClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ){
     Column(
         modifier = modifier.fillMaxSize()

@@ -26,12 +26,13 @@ import org.sopt.and.ui.theme.FirstGrey
 fun CloseTopBar(
     title: String,
     onBtnClick: () -> Unit,
+    modifier: Modifier = Modifier,
     containerColor: Color = FirstGrey,
     titleContentColor: Color = Color.White,
     actionIconContentColor: Color = Color.White
     ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         title = {
             Text(
