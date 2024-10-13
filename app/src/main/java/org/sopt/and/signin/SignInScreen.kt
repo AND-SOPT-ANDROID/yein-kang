@@ -68,9 +68,7 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
             ,
-            onClick = {
-                onSignInButtonClick()
-            },
+            onClick = onSignInButtonClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = WavveColor
             )
