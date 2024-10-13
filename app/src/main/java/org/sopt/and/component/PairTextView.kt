@@ -47,3 +47,12 @@ fun PairTextView(
         }
     }
 }
+
+@Preview
+@Composable
+fun PairTextViewPreview() {
+    PairTextView(
+        title = "홈",
+        subTitle = "구매하기"
+    )
+}

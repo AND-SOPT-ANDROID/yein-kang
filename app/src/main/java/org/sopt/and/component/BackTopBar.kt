@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.ui.theme.FirstGrey
@@ -60,5 +61,14 @@ fun BackTopBar(
             titleContentColor = titleContentColor,
             navigationIconContentColor = navigationIconContentColor,
         )
+    )
+}
+
+@Preview
+@Composable
+fun BackTopBarPreview() {
+    BackTopBar(
+        titleImg = R.drawable.wavve_icon,
+        onButtonClick = {}
     )
 }

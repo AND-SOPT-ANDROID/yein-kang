@@ -1,7 +1,9 @@
 package org.sopt.and.signin
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -148,6 +150,24 @@ fun SignInScreen(
             fontSize = 12.sp,
             color = ThirdGrey,
             modifier = Modifier.padding(top = 32.dp, start = 8.dp, end = 8.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SignInScreenPreview(){
+    Box(
+        modifier = Modifier.fillMaxSize().background(Color.Black)
+    ){
+        SignInScreen(
+            state = SignInState(),
+            onIdChange = {},
+            onPasswordChange = {},
+            onSignInButtonClick = {},
+            onFindInButtonClick = {},
+            onPasswordResetButtonClick = {},
+            onSignUpButtonClick = {}
         )
     }
 }

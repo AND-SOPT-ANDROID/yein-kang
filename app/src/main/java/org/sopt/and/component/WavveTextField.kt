@@ -19,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
@@ -79,5 +80,15 @@ fun WavveTextField(
             actionButton()
         }
     }
+}
+
+@Preview
+@Composable
+fun WavveTextFieldPreview() {
+    WavveTextField(
+        value = "id",
+        hint = "wavve@example.com",
+        onValueChange = {}
+    )
 }
 
