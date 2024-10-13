@@ -58,7 +58,7 @@ class SignInActivity : ComponentActivity() {
                     topBar = {
                         BackTopBar(
                             titleImg = R.drawable.wavve_icon,
-                            onBtnClick = {
+                            onButtonClick = {
                                 finish()
                             }
                         )
