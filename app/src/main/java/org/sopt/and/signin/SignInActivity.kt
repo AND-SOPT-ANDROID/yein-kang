@@ -126,7 +126,7 @@ class SignInActivity : ComponentActivity() {
             is SignInIntent.SignIn -> {
                 if (isValidatedSignIn(state.value.id, state.value.password)) {
                     state.value = state.value.copy(
-                        signInSuccessful = true,
+                        isSignInSuccess = true,
                         snackBarMessage = getString(R.string.signin_success_text)
                     )
 

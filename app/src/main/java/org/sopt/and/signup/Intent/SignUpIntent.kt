@@ -1,4 +1,4 @@
-package org.sopt.and.signup.Intent
+package org.sopt.and.signup.intent
 
 sealed class SignUpIntent {
     data class EnterId(val id: String) : SignUpIntent()

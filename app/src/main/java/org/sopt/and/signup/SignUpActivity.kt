@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.sopt.and.R
 import org.sopt.and.component.CloseTopBar
-import org.sopt.and.signup.Intent.SignUpIntent
+import org.sopt.and.signup.intent.SignUpIntent
 import org.sopt.and.signup.model.SignUpState
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
@@ -104,7 +104,7 @@ class SignUpActivity : ComponentActivity() {
                     }
                     else -> {
                         state.value = currentState.copy(
-                            signUpSuccessful = true,
+                            isSignUpSuccess = true,
                         )
                         intent.putExtra(ID, currentState.id)
                         intent.putExtra(PASSWORD, currentState.password)
