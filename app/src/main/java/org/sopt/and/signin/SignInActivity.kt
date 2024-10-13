@@ -27,6 +27,11 @@ import org.sopt.and.signup.SignUpActivity
 import org.sopt.and.signup.model.SignUpState
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.util.KeyUtil.DEFAULT_STRING
+import org.sopt.and.util.KeyUtil.EMAIL
+import org.sopt.and.util.KeyUtil.ID
+import org.sopt.and.util.KeyUtil.PASSWORD
+import org.sopt.and.util.KeyUtil.SNACK_BAR_MESSAGE
 
 class SignInActivity : ComponentActivity() {
 
@@ -37,9 +42,9 @@ class SignInActivity : ComponentActivity() {
     private val signUpLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data = result.data
-            val id = data?.getStringExtra("id") ?: ""
-            val password = data?.getStringExtra("password") ?: ""
-            val snackBarMessage = data?.getStringExtra("snackBarMessage") ?: ""
+            val id = data?.getStringExtra(ID) ?: DEFAULT_STRING
+            val password = data?.getStringExtra(PASSWORD) ?: DEFAULT_STRING
+            val snackBarMessage = data?.getStringExtra(SNACK_BAR_MESSAGE) ?: DEFAULT_STRING
 
             signUpState.value = signUpState.value.copy(id = id, password = password, snackBarMessage = snackBarMessage)
         }
@@ -126,8 +131,8 @@ class SignInActivity : ComponentActivity() {
                     )
 
                     Intent(this, MyActivity::class.java).apply {
-                        this.putExtra("email", state.value.id)
-                        this.putExtra("snackBarMessage", state.value.snackBarMessage)
+                        this.putExtra(EMAIL, state.value.id)
+                        this.putExtra(SNACK_BAR_MESSAGE, state.value.snackBarMessage)
                         startActivity(this)
                         finish()
                     }

@@ -16,9 +16,10 @@ import androidx.compose.ui.Modifier
 import org.sopt.and.R
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.util.KeyUtil.EMAIL
+import org.sopt.and.util.KeyUtil.SNACK_BAR_MESSAGE
 
 class MyActivity : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class MyActivity : ComponentActivity() {
                 ) { innerPadding ->
 
                     MyScreen(
-                        email = intent.getStringExtra("email")
+                        email = intent.getStringExtra(EMAIL)
                             ?: getString(R.string.my_email_error_text),
                         modifier = Modifier
                             .background(color = FirstGrey)
@@ -42,7 +43,7 @@ class MyActivity : ComponentActivity() {
 
                     LaunchedEffect(snackbarHostState) {
                         snackbarHostState.showSnackbar(
-                            intent.getStringExtra("snackBarMessage")
+                            intent.getStringExtra(SNACK_BAR_MESSAGE)
                                 ?: getString(R.string.my_error_text))
                     }
                 }

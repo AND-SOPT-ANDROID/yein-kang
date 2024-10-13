@@ -23,6 +23,9 @@ import org.sopt.and.signup.Intent.SignUpIntent
 import org.sopt.and.signup.model.SignUpState
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.util.KeyUtil.ID
+import org.sopt.and.util.KeyUtil.PASSWORD
+import org.sopt.and.util.KeyUtil.SNACK_BAR_MESSAGE
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,9 +106,9 @@ class SignUpActivity : ComponentActivity() {
                         state.value = currentState.copy(
                             signUpSuccessful = true,
                         )
-                        intent.putExtra("id", currentState.id)
-                        intent.putExtra("password", currentState.password)
-                        intent.putExtra("snackBarMessage", getString(R.string.signup_success_text))
+                        intent.putExtra(ID, currentState.id)
+                        intent.putExtra(PASSWORD, currentState.password)
+                        intent.putExtra(SNACK_BAR_MESSAGE, getString(R.string.signup_success_text))
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
