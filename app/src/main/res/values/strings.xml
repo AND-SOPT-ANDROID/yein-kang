@@ -8,6 +8,12 @@
     <string name="icon_arrow_right">이동</string>
     <string name="icon_notification">알림</string>
     <string name="icon_settings">설정</string>
+    <string name="logo_image">로고 이미지</string>
+    <string name="icon_naver">네이버</string>
+    <string name="icon_kakao">카카오</string>
+    <string name="icon_tworld">티월드</string>
+    <string name="icon_facebook">페이스북</string>
+    <string name="icon_apple">애플</string>
 
     <string name="signup_top_bar_title">회원가입</string>
     <string name="signup_intro_text">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>

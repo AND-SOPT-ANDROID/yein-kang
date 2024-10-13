@@ -37,7 +37,7 @@ fun BackTopBar(
         title = {
             Image(
                 painter = painterResource(id = titleImg),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.logo_image),
                 modifier = Modifier.height(32.dp)
             )
         },
