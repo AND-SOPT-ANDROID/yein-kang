@@ -106,10 +106,12 @@ class SignUpActivity : ComponentActivity() {
                         state.value = currentState.copy(
                             isSignUpSuccess = true,
                         )
-                        intent.putExtra(ID, currentState.id)
-                        intent.putExtra(PASSWORD, currentState.password)
-                        intent.putExtra(SNACK_BAR_MESSAGE, getString(R.string.signup_success_text))
-                        setResult(Activity.RESULT_OK, intent)
+                        intent.apply {
+                            putExtra(ID, currentState.id)
+                            putExtra(PASSWORD, currentState.password)
+                            putExtra(SNACK_BAR_MESSAGE, getString(R.string.signup_success_text))
+                            setResult(Activity.RESULT_OK, this)
+                        }
                         finish()
                     }
                 }

@@ -131,8 +131,8 @@ class SignInActivity : ComponentActivity() {
                     )
 
                     Intent(this, MyActivity::class.java).apply {
-                        this.putExtra(EMAIL, state.value.id)
-                        this.putExtra(SNACK_BAR_MESSAGE, state.value.snackBarMessage)
+                        putExtra(EMAIL, state.value.id)
+                        putExtra(SNACK_BAR_MESSAGE, state.value.snackBarMessage)
                         startActivity(this)
                         finish()
                     }
