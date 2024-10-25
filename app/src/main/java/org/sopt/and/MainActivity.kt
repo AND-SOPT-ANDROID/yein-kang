@@ -12,15 +12,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import org.sopt.and.my.MyActivity
 import org.sopt.and.signin.SignInActivity
 import org.sopt.and.ui.theme.ANDANDROIDTheme
+import org.sopt.and.util.PreferenceUtil
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val intent = Intent(this, SignInActivity::class.java)
-        startActivity(intent)
-        finish()
+
+        val pref = PreferenceUtil(this)
+        val isAutoSignIn = pref.id.isNotBlank() && pref.password.isNotBlank()
+
+        if(isAutoSignIn){
+            val intent = Intent(this, MyActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 }

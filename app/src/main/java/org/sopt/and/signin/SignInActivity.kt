@@ -28,12 +28,16 @@ import org.sopt.and.signup.model.SignUpState
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.util.KeyUtil.DEFAULT_STRING
-import org.sopt.and.util.KeyUtil.EMAIL
 import org.sopt.and.util.KeyUtil.ID
 import org.sopt.and.util.KeyUtil.PASSWORD
 import org.sopt.and.util.KeyUtil.SNACK_BAR_MESSAGE
+import org.sopt.and.util.PreferenceUtil
 
 class SignInActivity : ComponentActivity() {
+
+    private val preferenceUtil by lazy {
+        PreferenceUtil(applicationContext)
+    }
 
     private val signUpState: MutableState<SignUpState> by lazy {
         mutableStateOf(SignUpState())
@@ -130,9 +134,9 @@ class SignInActivity : ComponentActivity() {
                         snackBarMessage = getString(R.string.signin_success_text)
                     )
 
+                    setPrefIdPassword(state)
+
                     Intent(this, MyActivity::class.java).apply {
-                        putExtra(EMAIL, state.value.id)
-                        putExtra(SNACK_BAR_MESSAGE, state.value.snackBarMessage)
                         startActivity(this)
                         finish()
                     }
@@ -152,9 +156,18 @@ class SignInActivity : ComponentActivity() {
             return false
         }
         return signUpState.let {
-            it.value.id == id && it.value.password == password
+            if(preferenceUtil.id.isNotBlank() && preferenceUtil.password.isNotBlank()) {
+                it.value.id == preferenceUtil.id &&
+                        it.value.password == preferenceUtil.password
+            } else {
+                it.value.id == id && it.value.password == password
+            }
         }
     }
 
+    private fun setPrefIdPassword(state: MutableState<SignInState>) {
+        preferenceUtil.id = state.value.id
+        preferenceUtil.password = state.value.password
+    }
 
 }

@@ -1,5 +1,6 @@
 package org.sopt.and.my
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,12 +15,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.sopt.and.R
+import org.sopt.and.signin.SignInActivity
 import org.sopt.and.ui.theme.ANDANDROIDTheme
 import org.sopt.and.ui.theme.FirstGrey
-import org.sopt.and.util.KeyUtil.EMAIL
-import org.sopt.and.util.KeyUtil.SNACK_BAR_MESSAGE
+import org.sopt.and.util.PreferenceUtil
 
 class MyActivity : ComponentActivity() {
+
+    private val preferenceUtil by lazy {
+        PreferenceUtil(applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,17 +39,22 @@ class MyActivity : ComponentActivity() {
                 ) { innerPadding ->
 
                     MyScreen(
-                        email = intent.getStringExtra(EMAIL)
-                            ?: getString(R.string.my_email_error_text),
+                        email = preferenceUtil.id,
                         modifier = Modifier
                             .background(color = FirstGrey)
-                            .padding(innerPadding)
+                            .padding(innerPadding),
+                        onLogoutClick = {
+                            preferenceUtil.clearIdPassword()
+                            finish()
+                            startActivity(Intent(this, SignInActivity::class.java))
+                        }
                     )
 
-                    LaunchedEffect(snackbarHostState) {
-                        snackbarHostState.showSnackbar(
-                            intent.getStringExtra(SNACK_BAR_MESSAGE)
-                                ?: getString(R.string.my_error_text))
+                    if(preferenceUtil.id.isBlank()){
+                        LaunchedEffect(snackbarHostState) {
+                            snackbarHostState.showSnackbar(
+                                getString(R.string.my_error_text))
+                        }
                     }
                 }
             }

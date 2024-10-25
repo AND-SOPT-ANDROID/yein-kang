@@ -52,5 +52,6 @@
     <string name="my_like_contents_empty_text">관심 프로그램이 없어요.</string>
     <string name="my_email_error_text">이메일을 불러올 수 없습니다.</string>
     <string name="my_error_text">오류로 인해 데이터를 불러올 수 없습니다.</string>
+    <string name="my_logout_text">로그아웃</string>
 
 </resources>

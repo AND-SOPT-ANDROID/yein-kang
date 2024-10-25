@@ -2,6 +2,7 @@ package org.sopt.and.my
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,11 +33,13 @@ import org.sopt.and.component.ContentsView
 import org.sopt.and.component.PairTextView
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
+import org.sopt.and.ui.theme.ThirdGrey
 
 @Composable
 fun MyScreen(
     email: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -121,6 +124,16 @@ fun MyScreen(
                 .fillMaxWidth()
                 .background(color = FirstGrey)
                 .padding(16.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.my_logout_text),
+            color = ThirdGrey,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    onLogoutClick()
+                }
         )
     }
 }
