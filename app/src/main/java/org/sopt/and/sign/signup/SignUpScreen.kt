@@ -1,4 +1,4 @@
-package org.sopt.and.signup
+package org.sopt.and.sign.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,36 +14,77 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
+import org.sopt.and.component.CloseTopBar
 import org.sopt.and.component.DividerWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
-import org.sopt.and.signup.model.SignUpState
+import org.sopt.and.sign.signup.intent.SignUpIntent
+import org.sopt.and.sign.signup.viewmodel.SignUpViewModel
 import org.sopt.and.ui.theme.ThirdGrey
+
 
 @Composable
 fun SignUpScreen(
-    state: SignUpState,
-    onIdChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onSignUpButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    navigationToSignIn: (String, String) -> Unit,
+    onCloseButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = viewModel()
 ) {
+
+    val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(viewModel.intent) {
+        viewModel.intent.collect {  intent ->
+            when(intent) {
+                SignUpIntent.SignUp -> {
+                    navigationToSignIn(state.id, state.password)
+                }
+                is SignUpIntent.SnackBar -> {
+                    snackBarHostState.showSnackbar(context.getString(intent.message))
+                }
+            }
+        }
+    }
+
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
+
+        CloseTopBar(
+            title = stringResource(R.string.signup_top_bar_title),
+            onBtnClick = {
+                onCloseButtonClick()
+            }
+        )
+
         Text(
             text = buildAnnotatedString {
                 append(stringResource(R.string.signup_intro_text))
@@ -75,7 +116,7 @@ fun SignUpScreen(
         WavveTextField(
             value = state.id,
             hint = stringResource(R.string.signup_login_hint),
-            onValueChange = onIdChange,
+            onValueChange = { viewModel.updateId(it) },
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -102,7 +143,7 @@ fun SignUpScreen(
         WavveActionTextField(
             value = state.password,
             hint = stringResource(R.string.signup_password_hint),
-            onValueChange = onPasswordChange,
+            onValueChange = { viewModel.updatePassword(it) },
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -144,12 +185,16 @@ fun SignUpScreen(
 
         Spacer(Modifier.weight(1f))
 
+        SnackbarHost(
+            hostState = snackBarHostState,
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = ThirdGrey)
                 .clickable {
-                    onSignUpButtonClick()
+                    viewModel.onSignUpButtonClick()
                 }
                 .padding(vertical = 12.dp)
         ) {
@@ -160,6 +205,7 @@ fun SignUpScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
+
     }
 }
 
@@ -167,9 +213,11 @@ fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
         SignUpScreen(
-            state = SignUpState(),
-            onIdChange = {},
-            onPasswordChange = {},
-            onSignUpButtonClick = {}
+            navigationToSignIn = { id, password ->
+
+            },
+            onCloseButtonClick = {
+
+            }
         )
 }
