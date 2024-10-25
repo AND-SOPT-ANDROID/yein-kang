@@ -17,33 +17,71 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.ContentsView
 import org.sopt.and.component.PairTextView
+import org.sopt.and.my.intent.MyIntent
+import org.sopt.and.my.viewmodel.MyViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.util.PreferenceUtil
 
 @Composable
 fun MyScreen(
-    email: String,
+    onLogOut: () -> Unit = {},
     modifier: Modifier = Modifier,
-    onLogoutClick: () -> Unit = {}
+    viewModel: MyViewModel = viewModel()
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val context = LocalContext.current
+        val preferenceUtil = PreferenceUtil(context)
+        val snackBarHostState = remember { SnackbarHostState() }
+
+        viewModel.updateId(preferenceUtil.id)
+
+        LaunchedEffect(viewModel.intent, lifecycleOwner){
+            viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+                .collect{ intent ->
+                    when(intent) {
+                        MyIntent.LogOut -> {
+                            preferenceUtil.clearIdPassword()
+                            snackBarHostState.showSnackbar(
+                                message = context.getString(R.string.my_logout_text)
+                            )
+                            onLogOut()
+                        }
+                        is MyIntent.SnackBar -> TODO()
+                    }
+                }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,7 +100,7 @@ fun MyScreen(
             Spacer(Modifier.width(12.dp))
 
             Text(
-                text = email,
+                text = state.id,
                 color = Color.White
             )
 
@@ -132,7 +170,7 @@ fun MyScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    onLogoutClick()
+                    viewModel.onLogOutButtonClick()
                 }
         )
     }
@@ -141,7 +179,5 @@ fun MyScreen(
 @Preview(showBackground = true)
 @Composable
 fun MyScreenPreview() {
-    MyScreen(
-        email = "wavve@example.com"
-    )
+    MyScreen()
 }
