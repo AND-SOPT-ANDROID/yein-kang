@@ -23,7 +23,7 @@ class PreferenceUtil(
     fun clearIdPassword() {
         id = ""
         password = ""
-
+        preference.edit().clear().apply()
     }
 
 }
