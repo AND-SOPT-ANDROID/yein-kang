@@ -1,5 +1,6 @@
-package org.sopt.and.signin
+package org.sopt.and.sign.signin
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,44 +14,88 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
+import org.sopt.and.component.BackTopBar
 import org.sopt.and.component.DividerWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
-import org.sopt.and.signin.model.SignInState
+import org.sopt.and.sign.signin.intent.SignInIntent
+import org.sopt.and.sign.signin.viewmodel.SignInViewModel
+import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
 import org.sopt.and.ui.theme.WavveColor
+import org.sopt.and.util.PreferenceUtil
 
 @Composable
 fun SignInScreen(
-    state: SignInState,
-    onIdChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onSignInButtonClick: () -> Unit,
+    signUpId: String,
+    signUpPassword: String,
+    navigateToSignUp: () -> Unit,
+    navigateToMy: () -> Unit,
+    onBackButtonClick: () -> Unit,
     onFindInButtonClick: () -> Unit,
     onPasswordResetButtonClick: () -> Unit,
-    onSignUpButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SignInViewModel = viewModel()
 ){
+
+    val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
+    val preferenceUtil = PreferenceUtil(context)
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(viewModel.intent) {
+       viewModel.intent.collect{ intent ->
+           when(intent) {
+               SignInIntent.SignIn -> {
+                   preferenceUtil.id = state.id
+                   preferenceUtil.password = state.password
+                   navigateToMy()
+               }
+               SignInIntent.SignUp -> navigateToSignUp()
+               is SignInIntent.SnackBar -> {
+                   snackBarHostState.showSnackbar(context.getString(intent.message))
+               }
+           }
+       }
+    }
+
     Column(
         modifier = modifier.fillMaxSize()
-            .padding(top = 48.dp)
     ){
+        BackTopBar(
+            titleImg = R.drawable.wavve_icon,
+            onButtonClick = {
+                onBackButtonClick()
+            }
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
+
         WavveTextField(
             value = state.id,
             hint = stringResource(R.string.signup_login_hint),
-            onValueChange = onIdChange,
+            onValueChange = viewModel::updateId,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -59,7 +104,7 @@ fun SignInScreen(
         WavveActionTextField(
             value = state.password,
             hint = stringResource(R.string.signin_password_hint),
-            onValueChange = onPasswordChange,
+            onValueChange = viewModel::updatePassword,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -70,7 +115,10 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
             ,
-            onClick = onSignInButtonClick,
+            onClick = {
+                Log.d("TAG", "SignInScreen: ${signUpId}, ${signUpPassword}")
+                viewModel.onSignInButtonClick(signUpId, signUpPassword)
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = WavveColor
             )
@@ -129,7 +177,7 @@ fun SignInScreen(
                 color = ThirdGrey,
                 modifier = Modifier
                     .clickable {
-                        onSignUpButtonClick()
+                        viewModel.onSignUpButtonClick()
                     }
             )
         }
@@ -151,6 +199,12 @@ fun SignInScreen(
             color = ThirdGrey,
             modifier = Modifier.padding(top = 32.dp, start = 8.dp, end = 8.dp)
         )
+
+        Spacer(Modifier.weight(1f))
+
+        SnackbarHost(
+            hostState = snackBarHostState,
+        )
     }
 }
 
@@ -158,16 +212,17 @@ fun SignInScreen(
 @Composable
 fun SignInScreenPreview(){
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Black)
+        modifier = Modifier.fillMaxSize().background(FirstGrey)
     ){
         SignInScreen(
-            state = SignInState(),
-            onIdChange = {},
-            onPasswordChange = {},
-            onSignInButtonClick = {},
+            signUpId = "",
+            signUpPassword = "",
+            navigateToSignUp = {},
+            navigateToMy = {},
             onFindInButtonClick = {},
             onPasswordResetButtonClick = {},
-            onSignUpButtonClick = {}
+            modifier = Modifier,
+            onBackButtonClick = {}
         )
     }
 }
