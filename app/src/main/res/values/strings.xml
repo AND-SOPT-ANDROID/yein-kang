@@ -15,6 +15,10 @@
     <string name="icon_facebook">페이스북</string>
     <string name="icon_apple">애플</string>
 
+    <string name="main_tab_home">홈</string>
+    <string name="main_tab_search">검색</string>
+    <string name="main_tab_my">MY</string>
+
     <string name="signup_top_bar_title">회원가입</string>
     <string name="signup_intro_text">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>
     <string name="signup_login_hint">wavve@example.com</string>
