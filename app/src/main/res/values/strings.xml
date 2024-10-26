@@ -14,10 +14,23 @@
     <string name="icon_tworld">티월드</string>
     <string name="icon_facebook">페이스북</string>
     <string name="icon_apple">애플</string>
+    <string name="icon_cast">캐스트</string>
+    <string name="icon_live">라이브</string>
 
     <string name="main_tab_home">홈</string>
     <string name="main_tab_search">검색</string>
     <string name="main_tab_my">MY</string>
+
+    <string name="home_tab_new_classic">뉴클래식</string>
+    <string name="home_tab_drama">드라마</string>
+    <string name="home_tab_entertain">예능</string>
+    <string name="home_tab_movie">영화</string>
+    <string name="home_tab_animation">애니메이션</string>
+    <string name="home_tab_global">해외시리즈</string>
+    <string name="home_tab_documentary">시사교양</string>
+    <string name="home_tab_kids">키즈</string>
+    <string name="home_banner_image">홈배너 이미지</string>
+    <string name="home_banner_indicator">%s | %s</string>
 
     <string name="signup_top_bar_title">회원가입</string>
     <string name="signup_intro_text">이메일과 비밀번호만으로\nWavve를 즐길 수 있어요!</string>
