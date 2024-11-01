@@ -20,3 +20,5 @@ val NaverColor = Color(0xFF23B909)
 val FacebookColor = Color(0xFF3B5998)
 
 val WavveColor = Color(0xFF1453FA)
+
+val White = Color(0xFFFFFFFF)
