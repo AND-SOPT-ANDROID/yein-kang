@@ -41,7 +41,7 @@ import org.sopt.and.R
 import org.sopt.and.component.ContentsView
 import org.sopt.and.component.PairTextView
 import org.sopt.and.extension.noRippleClickable
-import org.sopt.and.my.intent.MyIntent
+import org.sopt.and.my.sideeffect.MySideEffect
 import org.sopt.and.my.viewmodel.MyViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
@@ -71,14 +71,14 @@ fun MyScreen(
             viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
                 .collect{ intent ->
                     when(intent) {
-                        MyIntent.LogOut -> {
+                        MySideEffect.LogOut -> {
                             PreferenceUtil.clearIdPassword()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )
                             onLogOut()
                         }
-                        is MyIntent.SnackBar -> TODO()
+                        is MySideEffect.SnackBar -> TODO()
                     }
                 }
         }

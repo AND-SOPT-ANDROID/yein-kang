@@ -39,7 +39,7 @@ import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
 import org.sopt.and.extension.noRippleClickable
-import org.sopt.and.sign.signup.intent.SignUpIntent
+import org.sopt.and.sign.signup.intent.SignUpSideEffect
 import org.sopt.and.sign.signup.viewmodel.SignUpViewModel
 import org.sopt.and.ui.theme.ThirdGrey
 import org.sopt.and.ui.theme.White
@@ -61,10 +61,10 @@ fun SignUpScreen(
     LaunchedEffect(viewModel.intent) {
         viewModel.intent.collect {  intent ->
             when(intent) {
-                SignUpIntent.SignUp -> {
+                SignUpSideEffect.SignUp -> {
                     navigationToSignIn(state.id, state.password)
                 }
-                is SignUpIntent.SnackBar -> {
+                is SignUpSideEffect.SnackBar -> {
                     snackBarHostState.showSnackbar(context.getString(intent.message))
                 }
             }

@@ -36,7 +36,7 @@ import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
 import org.sopt.and.extension.noRippleClickable
-import org.sopt.and.sign.signin.intent.SignInIntent
+import org.sopt.and.sign.signin.sideeffect.SignInSideEffect
 import org.sopt.and.sign.signin.viewmodel.SignInViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
@@ -65,13 +65,13 @@ fun SignInScreen(
     LaunchedEffect(viewModel.intent) {
        viewModel.intent.collect{ intent ->
            when(intent) {
-               SignInIntent.SignIn -> {
+               SignInSideEffect.SignIn -> {
                    PreferenceUtil.id = state.id
                    PreferenceUtil.password = state.password
                    navigateToMy()
                }
-               SignInIntent.SignUp -> navigateToSignUp()
-               is SignInIntent.SnackBar -> {
+               SignInSideEffect.SignUp -> navigateToSignUp()
+               is SignInSideEffect.SnackBar -> {
                    snackBarHostState.showSnackbar(context.getString(intent.message))
                }
            }
