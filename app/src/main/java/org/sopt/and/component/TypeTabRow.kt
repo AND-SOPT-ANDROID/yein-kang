@@ -30,7 +30,8 @@ fun TypeTabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
         containerColor = containerColor,
-        indicator = indicator
+        indicator = indicator,
+        divider = {}
     ){
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
