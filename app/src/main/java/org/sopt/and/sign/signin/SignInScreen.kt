@@ -20,9 +20,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +59,7 @@ fun SignInScreen(
 ){
 
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
+    val context = rememberUpdatedState(LocalContext.current).value
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.intent) {

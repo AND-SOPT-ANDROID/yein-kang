@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,8 +60,8 @@ fun MyScreen(
 
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val context = LocalContext.current
+        val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
+        val context = rememberUpdatedState(LocalContext.current).value
         val snackBarHostState = remember { SnackbarHostState() }
 
         viewModel.updateId(PreferenceUtil.id)
