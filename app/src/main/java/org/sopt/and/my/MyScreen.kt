@@ -61,17 +61,16 @@ fun MyScreen(
 
         val lifecycleOwner = LocalLifecycleOwner.current
         val context = LocalContext.current
-        val preferenceUtil = PreferenceUtil(context)
         val snackBarHostState = remember { SnackbarHostState() }
 
-        viewModel.updateId(preferenceUtil.id)
+        viewModel.updateId(PreferenceUtil.id)
 
         LaunchedEffect(viewModel.intent, lifecycleOwner){
             viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
                 .collect{ intent ->
                     when(intent) {
                         MyIntent.LogOut -> {
-                            preferenceUtil.clearIdPassword()
+                            PreferenceUtil.clearIdPassword()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )

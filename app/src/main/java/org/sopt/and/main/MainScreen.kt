@@ -60,8 +60,7 @@ fun MainScreen() {
 
 @Composable
 private fun getStartDestination(): Route {
-    val preferenceUtil = PreferenceUtil(LocalContext.current)
-    return if(preferenceUtil.id.isNotBlank() && preferenceUtil.password.isNotBlank()){
+    return if(PreferenceUtil.id.isNotBlank() && PreferenceUtil.password.isNotBlank()){
         Route.Home
     } else {
         Route.SignIn
@@ -70,8 +69,7 @@ private fun getStartDestination(): Route {
 
 @Composable
 private fun isUser(): Boolean {
-    val preferenceUtil = PreferenceUtil(LocalContext.current)
-    return preferenceUtil.id.isNotBlank() && preferenceUtil.password.isNotBlank()
+    return PreferenceUtil.id.isNotBlank() && PreferenceUtil.password.isNotBlank()
 }
 
 @Composable

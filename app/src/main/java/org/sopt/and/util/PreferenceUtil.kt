@@ -1,16 +1,21 @@
 package org.sopt.and.util
 
 import android.content.Context
+import android.content.SharedPreferences
 import org.sopt.and.util.KeyUtil.ID
 import org.sopt.and.util.KeyUtil.PASSWORD
 import org.sopt.and.util.KeyUtil.PREF_NAME
 
-class PreferenceUtil(
-    context: Context
-) {
-    private val preference = context.getSharedPreferences(
-        PREF_NAME, Context.MODE_PRIVATE
-    )
+object PreferenceUtil  {
+    private lateinit var preference: SharedPreferences
+
+    fun init(context: Context) {
+        if(!::preference.isInitialized){
+            preference = context.getSharedPreferences(
+                PREF_NAME, Context.MODE_PRIVATE
+            )
+        }
+    }
 
     var id: String
         get() = preference.getString(ID, "").toString()
@@ -25,5 +30,4 @@ class PreferenceUtil(
         password = ""
         preference.edit().clear().apply()
     }
-
 }

@@ -61,15 +61,14 @@ fun SignInScreen(
     val state by viewModel.state.collectAsState()
 
     val context = LocalContext.current
-    val preferenceUtil = PreferenceUtil(context)
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.intent) {
        viewModel.intent.collect{ intent ->
            when(intent) {
                SignInIntent.SignIn -> {
-                   preferenceUtil.id = state.id
-                   preferenceUtil.password = state.password
+                   PreferenceUtil.id = state.id
+                   PreferenceUtil.password = state.password
                    navigateToMy()
                }
                SignInIntent.SignUp -> navigateToSignUp()

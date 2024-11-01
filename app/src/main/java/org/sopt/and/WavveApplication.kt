@@ -5,10 +5,8 @@ import org.sopt.and.util.PreferenceUtil
 
 class WavveApplication: Application() {
 
-    private lateinit var prefs: PreferenceUtil
-
     override fun onCreate() {
         super.onCreate()
-        prefs = PreferenceUtil(applicationContext)
+        PreferenceUtil.init(this)
     }
 }
