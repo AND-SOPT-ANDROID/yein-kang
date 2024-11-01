@@ -115,7 +115,6 @@ fun SignInScreen(
                 .padding(horizontal = 8.dp)
             ,
             onClick = {
-                Log.d("TAG", "SignInScreen: ${signUpId}, ${signUpPassword}")
                 viewModel.onSignInButtonClick(signUpId, signUpPassword)
             },
             colors = ButtonDefaults.buttonColors(
