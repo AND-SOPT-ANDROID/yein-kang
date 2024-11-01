@@ -54,3 +54,24 @@ fun TypeTabRow(
 
     }
 }
+
+@Preview
+@Composable
+private fun TypeTabRowPreview() {
+    TypeTabRow(
+        tabTitles = HomeTabType.entries.map { it.titleRes }.toList(),
+        selectedTabIndex = 0,
+    ) { index, tab ->
+        Text(
+            text = stringResource(tab),
+            color = if (0 == index) White
+            else ThirdGrey,
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 8.dp)
+                .noRippleClickable(
+                    onClick = {  }
+                )
+        )
+    }
+}
