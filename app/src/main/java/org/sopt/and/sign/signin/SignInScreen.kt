@@ -2,7 +2,6 @@ package org.sopt.and.sign.signin
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +36,7 @@ import org.sopt.and.component.DividerWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.sign.signin.intent.SignInIntent
 import org.sopt.and.sign.signin.viewmodel.SignInViewModel
 import org.sopt.and.ui.theme.FirstGrey
@@ -141,9 +141,9 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        onFindInButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = onFindInButtonClick
+                    )
             )
 
             Text(
@@ -158,9 +158,9 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        onPasswordResetButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = onPasswordResetButtonClick
+                    )
             )
 
             Text(
@@ -175,9 +175,11 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        viewModel.onSignUpButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = {
+                            viewModel.onSignUpButtonClick()
+                        }
+                    )
             )
         }
 

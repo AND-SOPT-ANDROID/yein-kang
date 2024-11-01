@@ -2,7 +2,6 @@ package org.sopt.and.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,12 +9,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -27,6 +24,7 @@ import org.sopt.and.component.ContentRow
 import org.sopt.and.component.HorizontalBannerPager
 import org.sopt.and.component.LogoTopBar
 import org.sopt.and.component.RankContentRow
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.home.component.HomeTabRow
 import org.sopt.and.home.viewmodel.HomeViewModel
 import org.sopt.and.ui.theme.FirstGrey
@@ -55,9 +53,11 @@ fun HomeScreen(
                         modifier = Modifier
                             .size(24.dp)
                             .padding(end = 8.dp)
-                            .clickable {
+                            .noRippleClickable(
+                                onClick = {
 
-                            }
+                                }
+                            )
                     )
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.live_icon),
@@ -65,9 +65,11 @@ fun HomeScreen(
                         modifier = Modifier
                             .size(24.dp)
                             .padding(end = 8.dp)
-                            .clickable {
+                            .noRippleClickable(
+                                onClick = {
 
-                            }
+                                }
+                            )
                     )
                 })
             )

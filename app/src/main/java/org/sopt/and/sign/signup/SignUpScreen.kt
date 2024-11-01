@@ -1,7 +1,6 @@
 package org.sopt.and.sign.signup
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,9 +31,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.CloseTopBar
@@ -42,6 +38,7 @@ import org.sopt.and.component.DividerWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.sign.signup.intent.SignUpIntent
 import org.sopt.and.sign.signup.viewmodel.SignUpViewModel
 import org.sopt.and.ui.theme.ThirdGrey
@@ -193,9 +190,11 @@ fun SignUpScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = ThirdGrey)
-                .clickable {
-                    viewModel.onSignUpButtonClick()
-                }
+                .noRippleClickable(
+                    onClick = {
+                        viewModel.onSignUpButtonClick()
+                    }
+                )
                 .padding(vertical = 12.dp)
         ) {
             Text(

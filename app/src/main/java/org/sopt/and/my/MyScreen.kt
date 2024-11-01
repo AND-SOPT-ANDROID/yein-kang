@@ -2,7 +2,6 @@ package org.sopt.and.my
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +39,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.ContentsView
 import org.sopt.and.component.PairTextView
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.my.intent.MyIntent
 import org.sopt.and.my.viewmodel.MyViewModel
 import org.sopt.and.ui.theme.FirstGrey
@@ -168,9 +168,11 @@ fun MyScreen(
             color = ThirdGrey,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable {
-                    viewModel.onLogOutButtonClick()
-                }
+                .noRippleClickable(
+                    onClick = {
+                        viewModel.onLogOutButtonClick()
+                    }
+                )
         )
     }
 }

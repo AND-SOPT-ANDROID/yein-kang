@@ -1,6 +1,5 @@
 package org.sopt.and.home.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -12,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.component.TypeTabRow
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.home.HomeTabType
 import org.sopt.and.ui.theme.ThirdGrey
 
@@ -33,7 +33,9 @@ fun HomeTabRow(
             modifier = modifier
                 .wrapContentWidth()
                 .padding(horizontal = 8.dp)
-                .clickable { onTabClick(index) }
+                .noRippleClickable(
+                    onClick = { onTabClick(index) }
+                )
         )
     }
 }
