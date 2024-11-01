@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,6 +35,7 @@ fun MainScreen() {
 
     val navController = rememberNavController()
     val mainNavigator = remember(navController) { MainNavigator(navController) }
+    val startDestination = rememberUpdatedState(getStartDestination()).value
 
     Scaffold(
         bottomBar = {
@@ -45,12 +47,12 @@ fun MainScreen() {
                         onTabSelected = mainNavigator::navigateTab
                     )
                 }
+
                 else -> {}
             }
         }
     ) { innerPadding ->
 
-        val startDestination = getStartDestination()
         MainNavHost(
             navController = navController,
             startDestination = startDestination,
