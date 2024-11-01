@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,12 +37,15 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            if(isUser()){
-                MainBottomBar(
-                    tabs = MainTabItems.entries,
-                    currentTab = mainNavigator.currentTab ?: MainTabItems.HOME,
-                    onTabSelected = mainNavigator::navigateTab
-                )
+            when (mainNavigator.currentTab) {
+                MainTabItems.HOME, MainTabItems.SEARCH, MainTabItems.MY -> {
+                    MainBottomBar(
+                        tabs = MainTabItems.entries,
+                        currentTab = mainNavigator.currentTab ?: MainTabItems.HOME,
+                        onTabSelected = mainNavigator::navigateTab
+                    )
+                }
+                else -> {}
             }
         }
     ) { innerPadding ->
@@ -65,11 +67,6 @@ private fun getStartDestination(): Route {
     } else {
         Route.SignIn
     }
-}
-
-@Composable
-private fun isUser(): Boolean {
-    return PreferenceUtil.id.isNotBlank() && PreferenceUtil.password.isNotBlank()
 }
 
 @Composable
