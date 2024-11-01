@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import org.sopt.and.R
 import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,8 +29,8 @@ fun CloseTopBar(
     onBtnClick: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = FirstGrey,
-    titleContentColor: Color = Color.White,
-    actionIconContentColor: Color = Color.White
+    titleContentColor: Color = White,
+    actionIconContentColor: Color = White
     ) {
     CenterAlignedTopAppBar(
         modifier = modifier

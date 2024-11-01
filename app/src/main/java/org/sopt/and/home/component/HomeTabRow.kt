@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -14,6 +13,7 @@ import org.sopt.and.component.TypeTabRow
 import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.home.HomeTabType
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 
 @Composable
 fun HomeTabRow(
@@ -28,7 +28,7 @@ fun HomeTabRow(
     ) { index, tab ->
         Text(
             text = stringResource(tab),
-            color = if (selectedTabIndex == index) Color.White
+            color = if (selectedTabIndex == index) White
             else ThirdGrey,
             modifier = modifier
                 .wrapContentWidth()

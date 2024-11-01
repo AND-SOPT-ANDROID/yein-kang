@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -45,6 +44,7 @@ import org.sopt.and.my.viewmodel.MyViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 import org.sopt.and.util.PreferenceUtil
 
 @Composable
@@ -100,7 +100,7 @@ fun MyScreen(
 
             Text(
                 text = state.id,
-                color = Color.White
+                color = White
             )
 
             Spacer(Modifier.weight(1f))
@@ -108,7 +108,7 @@ fun MyScreen(
             Icon(
                 imageVector = Icons.Outlined.Notifications,
                 contentDescription = stringResource(R.string.icon_notification),
-                tint = Color.White
+                tint = White
             )
 
             Spacer(Modifier.width(24.dp))
@@ -116,7 +116,7 @@ fun MyScreen(
             Icon(
                 imageVector = Icons.Outlined.Settings,
                 contentDescription = stringResource(R.string.icon_settings),
-                tint = Color.White
+                tint = White
             )
 
         }

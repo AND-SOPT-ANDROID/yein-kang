@@ -1,6 +1,5 @@
 package org.sopt.and.sign.signin
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +42,7 @@ import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
 import org.sopt.and.ui.theme.WavveColor
+import org.sopt.and.ui.theme.White
 import org.sopt.and.util.PreferenceUtil
 
 @Composable
@@ -59,7 +59,6 @@ fun SignInScreen(
 ){
 
     val state by viewModel.state.collectAsState()
-
     val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -124,7 +123,7 @@ fun SignInScreen(
             Text(
                 text = stringResource(R.string.signin_login_text),
                 fontSize = 16.sp,
-                color = Color.White,
+                color = White,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 
 @Composable
 fun WavveTextField(
@@ -30,7 +31,7 @@ fun WavveTextField(
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    valueColor: Color = Color.White,
+    valueColor: Color = White,
     hintColor: Color = ThirdGrey,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         imeAction = ImeAction.Next

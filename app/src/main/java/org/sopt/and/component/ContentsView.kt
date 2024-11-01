@@ -20,13 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 
 @Composable
 fun ContentsView(
     title: String,
     contentText: String,
     modifier: Modifier = Modifier,
-    titleColor: Color = Color.White,
+    titleColor: Color = White,
     contentTextColor: Color = ThirdGrey,
 ) {
     Column(

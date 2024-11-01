@@ -23,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -42,6 +41,7 @@ import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.sign.signup.intent.SignUpIntent
 import org.sopt.and.sign.signup.viewmodel.SignUpViewModel
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 
 
 @Composable
@@ -86,7 +86,7 @@ fun SignUpScreen(
             text = buildAnnotatedString {
                 append(stringResource(R.string.signup_intro_text))
                 addStyle(
-                    style = SpanStyle(color = Color.White),
+                    style = SpanStyle(color = White),
                     start = 0,
                     end = 9
                 )
@@ -96,7 +96,7 @@ fun SignUpScreen(
                     end = 12
                 )
                 addStyle(
-                    style = SpanStyle(color = Color.White),
+                    style = SpanStyle(color = White),
                     start = 13,
                     end = 24
                 )
@@ -200,7 +200,7 @@ fun SignUpScreen(
             Text(
                 text = stringResource(R.string.signup_button_text),
                 fontSize = 16.sp,
-                color = Color.White,
+                color = White,
                 modifier = Modifier.align(Alignment.Center)
             )
         }

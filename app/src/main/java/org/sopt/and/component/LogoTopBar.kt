@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.and.R
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,8 +39,8 @@ fun LogoTopBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = FirstGrey,
-            titleContentColor = Color.White,
-            actionIconContentColor = Color.White
+            titleContentColor = White,
+            actionIconContentColor = White
         )
     )
 
