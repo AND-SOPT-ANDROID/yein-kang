@@ -3,16 +3,11 @@ package org.sopt.and.sign.signup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -35,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.CloseTopBar
 import org.sopt.and.component.DividerWithText
+import org.sopt.and.component.InfoWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
@@ -118,23 +114,7 @@ fun SignUpScreen(
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Info,
-                contentDescription = stringResource(R.string.icon_info),
-                tint = ThirdGrey,
-                modifier = Modifier.height(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.signup_login_guide),
-                fontSize = 12.sp,
-                color = ThirdGrey
-            )
-        }
+        InfoWithText(R.string.signup_login_guide)
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -145,23 +125,7 @@ fun SignUpScreen(
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Info,
-                contentDescription = stringResource(R.string.icon_info),
-                tint = ThirdGrey,
-                modifier = Modifier.height(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.signup_password_guide),
-                fontSize = 12.sp,
-                color = ThirdGrey
-            )
-        }
+        InfoWithText(R.string.signup_password_guide)
 
         Spacer(modifier = Modifier.padding(32.dp))
 
