@@ -118,7 +118,7 @@ private fun MainNavHost(
                     )
                 },
                 onBackButtonClick = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
                 onFindInButtonClick = {
 
@@ -135,11 +135,11 @@ private fun MainNavHost(
                 navigationToSignIn = { id, password ->
                     with(navController) {
                         setIdPassword(id, password)
-                        navController.popBackStack()
+                        navigateUp()
                     }
                 },
                 onCloseButtonClick = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
                 modifier = topBarModifier
             )
