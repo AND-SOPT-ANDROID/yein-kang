@@ -6,14 +6,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.and.extension.noRippleClickable
+import org.sopt.and.home.HomeTabType
 import org.sopt.and.ui.theme.FirstGrey
+import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 
 @Composable
 fun TypeTabRow(
@@ -30,7 +38,8 @@ fun TypeTabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
         containerColor = containerColor,
-        indicator = indicator
+        indicator = indicator,
+        divider = {}
     ){
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -43,5 +52,26 @@ fun TypeTabRow(
             }
         }
 
+    }
+}
+
+@Preview
+@Composable
+private fun TypeTabRowPreview() {
+    TypeTabRow(
+        tabTitles = HomeTabType.entries.map { it.titleRes }.toList(),
+        selectedTabIndex = 0,
+    ) { index, tab ->
+        Text(
+            text = stringResource(tab),
+            color = if (0 == index) White
+            else ThirdGrey,
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 8.dp)
+                .noRippleClickable(
+                    onClick = {  }
+                )
+        )
     }
 }

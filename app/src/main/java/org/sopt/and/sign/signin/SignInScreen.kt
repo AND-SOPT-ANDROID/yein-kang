@@ -1,8 +1,6 @@
 package org.sopt.and.sign.signin
 
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,17 +17,17 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.BackTopBar
@@ -37,12 +35,14 @@ import org.sopt.and.component.DividerWithText
 import org.sopt.and.component.OtherServiceIconRow
 import org.sopt.and.component.WavveActionTextField
 import org.sopt.and.component.WavveTextField
-import org.sopt.and.sign.signin.intent.SignInIntent
+import org.sopt.and.extension.noRippleClickable
+import org.sopt.and.sign.signin.sideeffect.SignInSideEffect
 import org.sopt.and.sign.signin.viewmodel.SignInViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
 import org.sopt.and.ui.theme.WavveColor
+import org.sopt.and.ui.theme.White
 import org.sopt.and.util.PreferenceUtil
 
 @Composable
@@ -58,22 +58,20 @@ fun SignInScreen(
     viewModel: SignInViewModel = viewModel()
 ){
 
-    val state by viewModel.state.collectAsState()
-
-    val context = LocalContext.current
-    val preferenceUtil = PreferenceUtil(context)
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = rememberUpdatedState(LocalContext.current).value
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.intent) {
        viewModel.intent.collect{ intent ->
            when(intent) {
-               SignInIntent.SignIn -> {
-                   preferenceUtil.id = state.id
-                   preferenceUtil.password = state.password
+               SignInSideEffect.SignIn -> {
+                   PreferenceUtil.id = state.id
+                   PreferenceUtil.password = state.password
                    navigateToMy()
                }
-               SignInIntent.SignUp -> navigateToSignUp()
-               is SignInIntent.SnackBar -> {
+               SignInSideEffect.SignUp -> navigateToSignUp()
+               is SignInSideEffect.SnackBar -> {
                    snackBarHostState.showSnackbar(context.getString(intent.message))
                }
            }
@@ -116,7 +114,6 @@ fun SignInScreen(
                 .padding(horizontal = 8.dp)
             ,
             onClick = {
-                Log.d("TAG", "SignInScreen: ${signUpId}, ${signUpPassword}")
                 viewModel.onSignInButtonClick(signUpId, signUpPassword)
             },
             colors = ButtonDefaults.buttonColors(
@@ -126,7 +123,7 @@ fun SignInScreen(
             Text(
                 text = stringResource(R.string.signin_login_text),
                 fontSize = 16.sp,
-                color = Color.White,
+                color = White,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }
@@ -142,9 +139,9 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        onFindInButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = onFindInButtonClick
+                    )
             )
 
             Text(
@@ -159,9 +156,9 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        onPasswordResetButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = onPasswordResetButtonClick
+                    )
             )
 
             Text(
@@ -176,9 +173,11 @@ fun SignInScreen(
                 fontSize = 12.sp,
                 color = ThirdGrey,
                 modifier = Modifier
-                    .clickable {
-                        viewModel.onSignUpButtonClick()
-                    }
+                    .noRippleClickable(
+                        onClick = {
+                            viewModel.onSignUpButtonClick()
+                        }
+                    )
             )
         }
 

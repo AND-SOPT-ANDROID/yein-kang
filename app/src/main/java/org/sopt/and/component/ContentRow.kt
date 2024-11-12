@@ -1,12 +1,10 @@
 package org.sopt.and.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.ui.theme.White
 
 @Composable
@@ -62,10 +61,9 @@ fun ContentRow(
                 contentDescription = stringResource(R.string.icon_arrow_right),
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable {
-                        onRightArrowClick()
-                    }
-
+                    .noRippleClickable(
+                        onClick = onRightArrowClick
+                    )
             )
         }
 
@@ -84,7 +82,9 @@ fun ContentRow(
                     modifier = modifier
                         .width(100.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable { onItemClick(index) }
+                        .noRippleClickable(
+                            onClick = { onItemClick(index) }
+                        )
                 )
             }
         }

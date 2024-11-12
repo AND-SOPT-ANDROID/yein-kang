@@ -1,6 +1,5 @@
 package org.sopt.and.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,13 +8,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.and.R
+import org.sopt.and.extension.noRippleClickable
+import org.sopt.and.ui.theme.White
 
 @Composable
 fun WavveActionTextField(
@@ -38,11 +38,13 @@ fun WavveActionTextField(
             Text(
                 text = if (isShowPassword) stringResource(R.string.text_field_hide)
                 else stringResource(R.string.text_field_show),
-                color = Color.White,
+                color = White,
                 modifier = Modifier
-                    .clickable {
-                        isShowPassword = !isShowPassword
-                    }
+                    .noRippleClickable(
+                        onClick = {
+                            isShowPassword = !isShowPassword
+                        }
+                    )
             )
         },
         modifier = modifier

@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,20 +35,24 @@ fun MainScreen() {
 
     val navController = rememberNavController()
     val mainNavigator = remember(navController) { MainNavigator(navController) }
+    val startDestination = rememberUpdatedState(getStartDestination()).value
 
     Scaffold(
         bottomBar = {
-            if(isUser()){
-                MainBottomBar(
-                    tabs = MainTabItems.entries,
-                    currentTab = mainNavigator.currentTab ?: MainTabItems.HOME,
-                    onTabSelected = mainNavigator::navigateTab
-                )
+            when (mainNavigator.currentTab) {
+                MainTabItems.HOME, MainTabItems.SEARCH, MainTabItems.MY -> {
+                    MainBottomBar(
+                        tabs = MainTabItems.entries,
+                        currentTab = mainNavigator.currentTab ?: MainTabItems.HOME,
+                        onTabSelected = mainNavigator::navigateTab
+                    )
+                }
+
+                else -> {}
             }
         }
     ) { innerPadding ->
 
-        val startDestination = getStartDestination()
         MainNavHost(
             navController = navController,
             startDestination = startDestination,
@@ -60,18 +64,11 @@ fun MainScreen() {
 
 @Composable
 private fun getStartDestination(): Route {
-    val preferenceUtil = PreferenceUtil(LocalContext.current)
-    return if(preferenceUtil.id.isNotBlank() && preferenceUtil.password.isNotBlank()){
+    return if(PreferenceUtil.id.isNotBlank() && PreferenceUtil.password.isNotBlank()){
         Route.Home
     } else {
         Route.SignIn
     }
-}
-
-@Composable
-private fun isUser(): Boolean {
-    val preferenceUtil = PreferenceUtil(LocalContext.current)
-    return preferenceUtil.id.isNotBlank() && preferenceUtil.password.isNotBlank()
 }
 
 @Composable
@@ -123,7 +120,7 @@ private fun MainNavHost(
                     )
                 },
                 onBackButtonClick = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
                 onFindInButtonClick = {
 
@@ -140,11 +137,11 @@ private fun MainNavHost(
                 navigationToSignIn = { id, password ->
                     with(navController) {
                         setIdPassword(id, password)
-                        navController.popBackStack()
+                        navigateUp()
                     }
                 },
                 onCloseButtonClick = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
                 modifier = topBarModifier
             )

@@ -1,7 +1,6 @@
 package org.sopt.and.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.and.R
+import org.sopt.and.extension.noRippleClickable
 import org.sopt.and.ui.theme.White
 
 @Composable
@@ -62,10 +62,9 @@ fun RankContentRow(
                 contentDescription = stringResource(R.string.icon_arrow_right),
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable {
-                        onRightArrowClick()
-                    }
-
+                    .noRippleClickable(
+                        onClick = onRightArrowClick
+                    )
             )
         }
 
@@ -80,9 +79,9 @@ fun RankContentRow(
                 Box(
                     modifier = Modifier
                         .width(100.dp)
-                        .clickable {
-                            onItemClick(index)
-                        },
+                        .noRippleClickable(
+                            onClick = { onItemClick(index) }
+                        ),
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Image(
@@ -92,7 +91,9 @@ fun RankContentRow(
                         modifier = modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp))
-                            .clickable { onItemClick(index) }
+                            .noRippleClickable(
+                                onClick = { onItemClick(index) }
+                            )
                     )
 
                     Text(

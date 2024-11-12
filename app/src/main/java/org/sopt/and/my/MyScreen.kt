@@ -2,7 +2,6 @@ package org.sopt.and.my
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,16 +16,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -40,11 +40,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and.R
 import org.sopt.and.component.ContentsView
 import org.sopt.and.component.PairTextView
-import org.sopt.and.my.intent.MyIntent
+import org.sopt.and.extension.noRippleClickable
+import org.sopt.and.my.sideeffect.MySideEffect
 import org.sopt.and.my.viewmodel.MyViewModel
 import org.sopt.and.ui.theme.FirstGrey
 import org.sopt.and.ui.theme.SecondGrey
 import org.sopt.and.ui.theme.ThirdGrey
+import org.sopt.and.ui.theme.White
 import org.sopt.and.util.PreferenceUtil
 
 @Composable
@@ -59,25 +61,24 @@ fun MyScreen(
 
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val context = LocalContext.current
-        val preferenceUtil = PreferenceUtil(context)
+        val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
+        val context = rememberUpdatedState(LocalContext.current).value
         val snackBarHostState = remember { SnackbarHostState() }
 
-        viewModel.updateId(preferenceUtil.id)
+        viewModel.updateId(PreferenceUtil.id)
 
         LaunchedEffect(viewModel.intent, lifecycleOwner){
             viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
                 .collect{ intent ->
                     when(intent) {
-                        MyIntent.LogOut -> {
-                            preferenceUtil.clearIdPassword()
+                        MySideEffect.LogOut -> {
+                            PreferenceUtil.clearIdPassword()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )
                             onLogOut()
                         }
-                        is MyIntent.SnackBar -> TODO()
+                        is MySideEffect.SnackBar -> TODO()
                     }
                 }
         }
@@ -101,7 +102,7 @@ fun MyScreen(
 
             Text(
                 text = state.id,
-                color = Color.White
+                color = White
             )
 
             Spacer(Modifier.weight(1f))
@@ -109,7 +110,7 @@ fun MyScreen(
             Icon(
                 imageVector = Icons.Outlined.Notifications,
                 contentDescription = stringResource(R.string.icon_notification),
-                tint = Color.White
+                tint = White
             )
 
             Spacer(Modifier.width(24.dp))
@@ -117,7 +118,7 @@ fun MyScreen(
             Icon(
                 imageVector = Icons.Outlined.Settings,
                 contentDescription = stringResource(R.string.icon_settings),
-                tint = Color.White
+                tint = White
             )
 
         }
@@ -164,14 +165,20 @@ fun MyScreen(
                 .padding(16.dp)
         )
 
+        SnackbarHost(
+            hostState = snackBarHostState
+        )
+
         Text(
             text = stringResource(R.string.my_logout_text),
             color = ThirdGrey,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable {
-                    viewModel.onLogOutButtonClick()
-                }
+                .noRippleClickable(
+                    onClick = {
+                        viewModel.onLogOutButtonClick()
+                    }
+                )
         )
     }
 }
