@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.hilt)
+    implementation(project(":domain"))
     ksp(libs.hilt.compiler)
     implementation(libs.kotlinx.serialization.json)
 
