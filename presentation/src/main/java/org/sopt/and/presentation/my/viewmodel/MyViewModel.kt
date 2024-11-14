@@ -9,13 +9,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.presentation.my.model.MyState
 import org.sopt.and.presentation.my.sideeffect.MySideEffect
 import javax.inject.Inject
 
 @HiltViewModel
 class MyViewModel @Inject constructor(
-
+    private val userRepository: UserRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(MyState())
@@ -24,12 +25,20 @@ class MyViewModel @Inject constructor(
     private val _intent = MutableSharedFlow<MySideEffect>()
     val intent = _intent.asSharedFlow()
 
-    fun updateId(id: String) = _state.update {
-        it.copy(id = id)
+    init {
+        updateId()
+    }
+
+    fun updateId() = _state.update {
+        it.copy(id = userRepository.getId())
     }
 
     fun onLogOutButtonClick() = viewModelScope.launch {
         _intent.emit(MySideEffect.LogOut)
+    }
+
+    fun clearIdPassword() = viewModelScope.launch {
+        userRepository.clearIdPassword()
     }
 
 

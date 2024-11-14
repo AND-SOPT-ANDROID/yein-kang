@@ -47,7 +47,6 @@ import org.sopt.and.presentation.ui.theme.FirstGrey
 import org.sopt.and.presentation.ui.theme.SecondGrey
 import org.sopt.and.presentation.ui.theme.ThirdGrey
 import org.sopt.and.presentation.ui.theme.White
-import org.sopt.and.presentation.util.PreferenceUtil
 
 @Composable
 fun MyScreen(
@@ -65,14 +64,12 @@ fun MyScreen(
         val context = rememberUpdatedState(LocalContext.current).value
         val snackBarHostState = remember { SnackbarHostState() }
 
-        viewModel.updateId(PreferenceUtil.id)
-
         LaunchedEffect(viewModel.intent, lifecycleOwner){
             viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
                 .collect{ intent ->
                     when(intent) {
                         MySideEffect.LogOut -> {
-                            PreferenceUtil.clearIdPassword()
+                            viewModel.clearIdPassword()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )

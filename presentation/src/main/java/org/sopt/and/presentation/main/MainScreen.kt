@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,20 +23,22 @@ import org.sopt.and.presentation.extension.getPassword
 import org.sopt.and.presentation.extension.setIdPassword
 import org.sopt.and.presentation.home.HomeScreen
 import org.sopt.and.presentation.main.component.MainBottomBar
+import org.sopt.and.presentation.main.viewmodel.MainViewModel
 import org.sopt.and.presentation.my.MyScreen
 import org.sopt.and.presentation.navigation.Route
 import org.sopt.and.presentation.search.SearchScreen
 import org.sopt.and.presentation.sign.signin.SignInScreen
 import org.sopt.and.presentation.sign.signup.SignUpScreen
 import org.sopt.and.presentation.ui.theme.FirstGrey
-import org.sopt.and.presentation.util.PreferenceUtil
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewmodel: MainViewModel = hiltViewModel()
+) {
 
     val navController = rememberNavController()
     val mainNavigator = remember(navController) { MainNavigator(navController) }
-    val startDestination = rememberUpdatedState(getStartDestination()).value
+    val startDestination = viewmodel.getStartDestination()
 
     Scaffold(
         bottomBar = {
@@ -59,15 +62,6 @@ fun MainScreen() {
             paddingValues = innerPadding
         )
 
-    }
-}
-
-@Composable
-private fun getStartDestination(): Route {
-    return if(PreferenceUtil.id.isNotBlank() && PreferenceUtil.password.isNotBlank()){
-        Route.Home
-    } else {
-        Route.SignIn
     }
 }
 

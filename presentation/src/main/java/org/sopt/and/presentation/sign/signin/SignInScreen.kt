@@ -43,7 +43,6 @@ import org.sopt.and.presentation.ui.theme.SecondGrey
 import org.sopt.and.presentation.ui.theme.ThirdGrey
 import org.sopt.and.presentation.ui.theme.WavveColor
 import org.sopt.and.presentation.ui.theme.White
-import org.sopt.and.presentation.util.PreferenceUtil
 
 @Composable
 fun SignInScreen(
@@ -66,8 +65,7 @@ fun SignInScreen(
        viewModel.intent.collect{ intent ->
            when(intent) {
                SignInSideEffect.SignIn -> {
-                   PreferenceUtil.id = state.id
-                   PreferenceUtil.password = state.password
+                   viewModel.saveUser(state.id, state.password)
                    navigateToMy()
                }
                SignInSideEffect.SignUp -> navigateToSignUp()
