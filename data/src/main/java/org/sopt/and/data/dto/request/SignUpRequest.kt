@@ -9,3 +9,11 @@ data class SignUpRequest(
     val password: String,
     val username: String
 )
+
+fun User.toRequestBody(): SignUpRequest {
+    return SignUpRequest(
+        hobby = hobby,
+        password = password,
+        username = username
+    )
+}
