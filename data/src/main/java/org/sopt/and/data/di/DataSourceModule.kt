@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.sopt.and.data.datasource.AuthDataSource
 import org.sopt.and.data.datasource.UserDataSource
+import org.sopt.and.data.service.AuthService
 import org.sopt.and.data.service.UserService
 import javax.inject.Singleton
 
@@ -19,5 +21,12 @@ internal object DataSourceModule {
         @UserSharedPreference userSharedPreference: SharedPreferences,
         userService: UserService
     ): UserDataSource = UserDataSource(userSharedPreference, userService)
+
+    @Singleton
+    @Provides
+    fun provideAuthDataSource(
+        authService: AuthService
+    ): AuthDataSource = AuthDataSource(authService)
+
 
 }
