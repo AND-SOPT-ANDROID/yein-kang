@@ -35,6 +35,7 @@ import org.sopt.and.presentation.component.DividerWithText
 import org.sopt.and.presentation.component.OtherServiceIconRow
 import org.sopt.and.presentation.component.WavveActionTextField
 import org.sopt.and.presentation.component.WavveTextField
+import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.sign.signin.sideeffect.SignInSideEffect
 import org.sopt.and.presentation.sign.signin.viewmodel.SignInViewModel
@@ -46,8 +47,6 @@ import org.sopt.and.presentation.ui.theme.White
 
 @Composable
 fun SignInScreen(
-    signUpId: String,
-    signUpPassword: String,
     navigateToSignUp: () -> Unit,
     navigateToMy: () -> Unit,
     onBackButtonClick: () -> Unit,
@@ -69,11 +68,14 @@ fun SignInScreen(
                    navigateToMy()
                }
                SignInSideEffect.SignUp -> navigateToSignUp()
-               is SignInSideEffect.SnackBar -> {
-                   snackBarHostState.showSnackbar(context.getString(intent.message))
-               }
+               is SignInSideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(intent.message))
+               is SignInSideEffect.SnackBarText -> snackBarHostState.showSnackbar(intent.message)
            }
        }
+    }
+
+    LaunchedEffect(viewModel.networkState) {
+        collectNetworkState(viewModel)
     }
 
     Column(
@@ -112,7 +114,7 @@ fun SignInScreen(
                 .padding(horizontal = 8.dp)
             ,
             onClick = {
-                viewModel.onSignInButtonClick(signUpId, signUpPassword)
+                viewModel.signIn()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = WavveColor
@@ -205,6 +207,22 @@ fun SignInScreen(
     }
 }
 
+private suspend fun collectNetworkState(viewModel: SignInViewModel) {
+    viewModel.networkState.collect { networkState ->
+        when(networkState){
+            is NetworkState.Loading -> {
+                // TODO 로딩 추가
+            }
+            is NetworkState.Error -> {
+                viewModel.handleSignInIntentError(networkState.title + networkState.msg)
+            }
+            is NetworkState.Success -> {
+                viewModel.handleSignInIntentSuccess()
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview(){
@@ -212,8 +230,6 @@ fun SignInScreenPreview(){
         modifier = Modifier.fillMaxSize().background(FirstGrey)
     ){
         SignInScreen(
-            signUpId = "",
-            signUpPassword = "",
             navigateToSignUp = {},
             navigateToMy = {},
             onFindInButtonClick = {},

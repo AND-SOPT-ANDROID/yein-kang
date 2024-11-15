@@ -9,22 +9,33 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and.domain.exception.onError
+import org.sopt.and.domain.exception.onSuccess
+import org.sopt.and.domain.model.SignInRequest
+import org.sopt.and.domain.repository.AuthRepository
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.presentation.R
+import org.sopt.and.presentation.delegate.NetworkDelegate
 import org.sopt.and.presentation.sign.signin.model.SignInState
 import org.sopt.and.presentation.sign.signin.sideeffect.SignInSideEffect
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ): ViewModel() {
+
+    @Inject
+    lateinit var networkDelegate: NetworkDelegate
 
     private var _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
 
     private var _intent = MutableSharedFlow<SignInSideEffect>()
     val intent = _intent.asSharedFlow()
+
+    val networkState get() = networkDelegate.networkState
 
     fun saveUser(id: String, password: String){
         userRepository.saveUser(id, password)
@@ -38,22 +49,30 @@ class SignInViewModel @Inject constructor(
         it.copy(password = password)
     }
 
+    fun signIn() = viewModelScope.launch {
+        val currentState = _state.value
+        val signInRequest = SignInRequest(
+            username = currentState.id,
+            password = currentState.password
+        )
+        authRepository.signIn(signInRequest).onSuccess {
+            networkDelegate.handleNetworkSuccess()
+        }.onError {
+            networkDelegate.handleSignInError(it)
+        }
+    }
+
     fun onSignUpButtonClick() = viewModelScope.launch {
         _intent.emit(SignInSideEffect.SignUp)
     }
 
-    fun onSignInButtonClick(id: String, password: String) = viewModelScope.launch {
-        if(isValidateSignIn(id, password)) {
-            _intent.emit(SignInSideEffect.SnackBar(R.string.signin_success_text))
-            _intent.emit(SignInSideEffect.SignIn)
-        } else {
-            _intent.emit(SignInSideEffect.SnackBar(R.string.signin_failure_text))
-        }
+    suspend fun handleSignInIntentError(message: String) {
+        _intent.emit(SignInSideEffect.SnackBarText(message))
     }
-    private fun isValidateSignIn(id: String, password: String): Boolean {
-        return state.value.let {
-            it.id == id && it.password == password
-        }
+
+    suspend fun handleSignInIntentSuccess() {
+        _intent.emit(SignInSideEffect.SnackBar(R.string.signin_success_text))
+        _intent.emit(SignInSideEffect.SignIn)
     }
 
 }

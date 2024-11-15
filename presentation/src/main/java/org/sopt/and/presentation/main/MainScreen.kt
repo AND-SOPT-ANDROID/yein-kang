@@ -98,8 +98,6 @@ private fun MainNavHost(
     ) {
         composable<Route.SignIn> {
             SignInScreen(
-                signUpId = navController.getId(),
-                signUpPassword = navController.getPassword(),
                 navigateToSignUp = {
                     navController.navigate(Route.SignUp)
                 },
