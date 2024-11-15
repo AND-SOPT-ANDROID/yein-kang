@@ -7,6 +7,7 @@ import org.sopt.and.data.di.UserSharedPreference
 import org.sopt.and.data.dto.request.SignUpRequestDto
 import org.sopt.and.data.service.UserService
 import org.sopt.and.domain.exception.Result
+import org.sopt.and.domain.model.MyHobbyResponse
 import org.sopt.and.domain.model.SignUpResponse
 
 internal class UserDataSource @Inject constructor(
@@ -35,6 +36,10 @@ internal class UserDataSource @Inject constructor(
 
     suspend fun signUp(request: SignUpRequestDto): Result<SignUpResponse> = execute {
         userService.signUp(request).result.toDomainModel()
+    }
+
+    suspend fun getMyHobby(token: String): Result<MyHobbyResponse> = execute {
+        userService.getMyHobby(token).result.toDomainModel()
     }
 
     companion object {

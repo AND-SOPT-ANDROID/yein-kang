@@ -7,6 +7,7 @@ import org.sopt.and.domain.model.SignUpResponse
 import org.sopt.and.domain.model.User
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.domain.exception.Result
+import org.sopt.and.domain.model.MyHobbyResponse
 
 internal class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
@@ -30,6 +31,10 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override suspend fun signUp(user: User): Result<SignUpResponse> {
         return userDataSource.signUp(user.toRequestBody())
+    }
+
+    override suspend fun getMyHobby(token: String): Result<MyHobbyResponse> {
+        return userDataSource.getMyHobby(token)
     }
 
 }
