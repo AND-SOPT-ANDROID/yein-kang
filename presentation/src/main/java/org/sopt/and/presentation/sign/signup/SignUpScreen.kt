@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -15,18 +16,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import org.sopt.and.presentation.R
 import org.sopt.and.presentation.component.CloseTopBar
 import org.sopt.and.presentation.component.DividerWithText
@@ -34,6 +37,7 @@ import org.sopt.and.presentation.component.InfoWithText
 import org.sopt.and.presentation.component.OtherServiceIconRow
 import org.sopt.and.presentation.component.WavveActionTextField
 import org.sopt.and.presentation.component.WavveTextField
+import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.sign.signup.intent.SignUpSideEffect
 import org.sopt.and.presentation.sign.signup.viewmodel.SignUpViewModel
@@ -51,7 +55,7 @@ fun SignUpScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val context = rememberUpdatedState(LocalContext.current).value
+    val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel.intent) {
@@ -63,8 +67,16 @@ fun SignUpScreen(
                 is SignUpSideEffect.SnackBar -> {
                     snackBarHostState.showSnackbar(context.getString(intent.message))
                 }
+
+                is SignUpSideEffect.SnackBarText -> {
+                    snackBarHostState.showSnackbar(intent.message)
+                }
             }
         }
+    }
+
+    LaunchedEffect(viewModel.networkState) {
+        collectNetworkState(viewModel)
     }
 
     Column(
@@ -174,7 +186,7 @@ fun SignUpScreen(
                 .background(color = ThirdGrey)
                 .noRippleClickable(
                     onClick = {
-                        viewModel.onSignUpButtonClick()
+                        viewModel.signUp()
                     }
                 )
                 .padding(vertical = 12.dp)
@@ -187,6 +199,22 @@ fun SignUpScreen(
             )
         }
 
+    }
+}
+
+private suspend fun collectNetworkState(viewModel: SignUpViewModel) {
+    viewModel.networkState.collect { networkState ->
+        when(networkState){
+            is NetworkState.Loading -> {
+                // TODO 로딩 추가
+            }
+            is NetworkState.Error -> {
+                viewModel.handleSignUpIntentError(networkState.title + networkState.msg)
+            }
+            is NetworkState.Success -> {
+                viewModel.handleSignUpIntentSuccess()
+            }
+        }
     }
 }
 
