@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 import org.sopt.and.domain.model.User
 
 @Serializable
-data class SignUpRequest(
+internal data class SignUpRequest(
     val hobby: String,
     val password: String,
     val username: String
 )
 
-fun User.toRequestBody(): SignUpRequest {
+internal fun User.toRequestBody(): SignUpRequest {
     return SignUpRequest(
         hobby = hobby,
         password = password,

@@ -7,7 +7,7 @@ import org.sopt.and.data.di.UserSharedPreference
 import org.sopt.and.data.dto.request.SignUpRequest
 import org.sopt.and.data.service.UserService
 import org.sopt.and.domain.exception.Result
-import org.sopt.and.domain.model.SignUp
+import org.sopt.and.domain.model.SignUpRequest
 
 internal class UserDataSource @Inject constructor(
     @UserSharedPreference private val userSharedPreference: SharedPreferences,
@@ -28,7 +28,7 @@ internal class UserDataSource @Inject constructor(
         userSharedPreference.edit().clear().apply()
     }
 
-    suspend fun signUp(request: SignUpRequest): Result<SignUp> = execute {
+    suspend fun signUp(request: SignUpRequest): Result<org.sopt.and.domain.model.SignUpRequest> = execute {
         userService.signUp(request).result.toDomainModel()
     }
 
