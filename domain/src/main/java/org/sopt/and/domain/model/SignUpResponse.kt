@@ -1,5 +1,5 @@
 package org.sopt.and.domain.model
 
-data class SignUpRequest(
+data class SignUpResponse(
     val userNumber: Int
 )

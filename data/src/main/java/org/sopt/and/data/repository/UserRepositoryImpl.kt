@@ -3,7 +3,7 @@ package org.sopt.and.data.repository
 import jakarta.inject.Inject
 import org.sopt.and.data.datasource.UserDataSource
 import org.sopt.and.data.dto.request.toRequestBody
-import org.sopt.and.domain.model.SignUpRequest
+import org.sopt.and.domain.model.SignUpResponse
 import org.sopt.and.domain.model.User
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.domain.exception.Result
@@ -24,7 +24,7 @@ internal class UserRepositoryImpl @Inject constructor(
         return userDataSource.id
     }
 
-    override suspend fun signUp(user: User): Result<SignUpRequest> {
+    override suspend fun signUp(user: User): Result<SignUpResponse> {
         return userDataSource.signUp(user.toRequestBody())
     }
 
