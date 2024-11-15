@@ -30,15 +30,15 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateId() = _state.update {
-        it.copy(id = userRepository.getId())
+        it.copy(id = userRepository.getToken())
     }
 
     fun onLogOutButtonClick() = viewModelScope.launch {
         _intent.emit(MySideEffect.LogOut)
     }
 
-    fun clearIdPassword() = viewModelScope.launch {
-        userRepository.clearIdPassword()
+    fun clearUserPreference() = viewModelScope.launch {
+        userRepository.clearUserPreference()
     }
 
 

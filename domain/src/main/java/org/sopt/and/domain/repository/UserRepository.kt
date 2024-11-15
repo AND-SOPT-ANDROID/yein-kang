@@ -6,7 +6,8 @@ import org.sopt.and.domain.exception.Result
 
 interface UserRepository {
     fun saveUser(id: String, password: String)
-    fun clearIdPassword()
-    fun getId(): String
+    fun saveToken(token: String)
+    fun clearUserPreference()
+    fun getToken(): String
     suspend fun signUp(user: User): Result<SignUpResponse>
 }

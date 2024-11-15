@@ -16,12 +16,16 @@ internal class UserRepositoryImpl @Inject constructor(
         userDataSource.password = password
     }
 
-    override fun clearIdPassword() {
-        userDataSource.clearIdPassword()
+    override fun saveToken(token: String) {
+        userDataSource.token = token
     }
 
-    override fun getId(): String {
-        return userDataSource.id
+    override fun clearUserPreference() {
+        userDataSource.clearUserPreference()
+    }
+
+    override fun getToken(): String {
+        return userDataSource.token
     }
 
     override suspend fun signUp(user: User): Result<SignUpResponse> {

@@ -12,7 +12,7 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
 
     fun getStartDestination(): Route {
-        return if(userRepository.getId().isNotEmpty()){
+        return if(userRepository.getToken().isNotEmpty()){
             Route.Home
         } else {
             Route.SignIn

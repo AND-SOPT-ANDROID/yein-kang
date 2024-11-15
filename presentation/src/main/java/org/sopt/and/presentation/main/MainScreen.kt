@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -18,8 +17,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import org.sopt.and.presentation.extension.getId
-import org.sopt.and.presentation.extension.getPassword
 import org.sopt.and.presentation.extension.setIdPassword
 import org.sopt.and.presentation.home.HomeScreen
 import org.sopt.and.presentation.main.component.MainBottomBar
@@ -153,7 +150,7 @@ private fun MainNavHost(
 
         composable<Route.My> {
             MyScreen(
-                onLogOut = {
+                onLogout = {
                     navController.navigate(
                         Route.SignIn,
                         navOptions = navOptions {

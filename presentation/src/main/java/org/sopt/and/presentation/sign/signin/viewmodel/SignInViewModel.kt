@@ -41,6 +41,10 @@ class SignInViewModel @Inject constructor(
         userRepository.saveUser(id, password)
     }
 
+    private fun saveToken(token: String){
+        userRepository.saveToken(token)
+    }
+
     fun updateId(id: String) = _state.update {
         it.copy(id = id)
     }
@@ -57,6 +61,7 @@ class SignInViewModel @Inject constructor(
         )
         authRepository.signIn(signInRequest).onSuccess {
             networkDelegate.handleNetworkSuccess()
+            saveToken(it.token)
         }.onError {
             networkDelegate.handleSignInError(it)
         }

@@ -50,7 +50,7 @@ import org.sopt.and.presentation.ui.theme.White
 
 @Composable
 fun MyScreen(
-    onLogOut: () -> Unit = {},
+    onLogout: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: MyViewModel = hiltViewModel()
 ) {
@@ -69,11 +69,11 @@ fun MyScreen(
                 .collect{ intent ->
                     when(intent) {
                         MySideEffect.LogOut -> {
-                            viewModel.clearIdPassword()
+                            viewModel.clearUserPreference()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )
-                            onLogOut()
+                            onLogout()
                         }
                         is MySideEffect.SnackBar -> TODO()
                     }
