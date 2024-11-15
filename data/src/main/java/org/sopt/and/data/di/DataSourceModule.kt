@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.sopt.and.data.datasource.UserDataSource
+import org.sopt.and.data.service.UserService
 import javax.inject.Singleton
 
 @Module
@@ -15,7 +16,8 @@ internal object DataSourceModule {
     @Singleton
     @Provides
     fun provideUserDataSource(
-        @UserSharedPreference userSharedPreference: SharedPreferences
-    ): UserDataSource = UserDataSource(userSharedPreference)
+        @UserSharedPreference userSharedPreference: SharedPreferences,
+        userService: UserService
+    ): UserDataSource = UserDataSource(userSharedPreference, userService)
 
 }
