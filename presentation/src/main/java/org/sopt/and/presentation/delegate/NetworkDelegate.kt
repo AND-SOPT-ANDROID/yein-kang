@@ -36,6 +36,30 @@ class NetworkDelegate @Inject constructor() {
         _networkState.value = NetworkState.Error(updatedException.title, updatedException.message)
     }
 
+    fun handleSignInError(exception: NetworkError) {
+        val updatedException = when(exception){
+            is HttpCodeError -> {
+                when(exception.title) {
+                    "400" -> HttpCodeError(
+                        "요청에 문제가 있습니다. ",
+                        if (exception.message == "01") "유효하지 못한 요청입니다." else "id 혹은 password가 틀렸습니다."
+                    )
+                    "403" -> HttpCodeError(
+                        "요청에 문제가 있습니다. ",
+                        "password가 틀렸습니다."
+                    )
+                    "404" -> HttpCodeError(
+                        "요청에 문제가 있습니다. ",
+                        "유효하지 못한 요청입니다."
+                    )
+                    else -> UnknownError
+                }
+            }
+            else -> exception
+        }
+        _networkState.value = NetworkState.Error(updatedException.title, updatedException.message)
+    }
+
 
     fun handleNetworkSuccess(){
         _networkState.value = NetworkState.Success
