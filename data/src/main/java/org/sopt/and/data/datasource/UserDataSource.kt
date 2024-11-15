@@ -2,10 +2,16 @@ package org.sopt.and.data.datasource
 
 import android.content.SharedPreferences
 import jakarta.inject.Inject
+import org.sopt.and.data.common.execute
 import org.sopt.and.data.di.UserSharedPreference
+import org.sopt.and.data.dto.request.SignUpRequest
+import org.sopt.and.data.service.UserService
+import org.sopt.and.domain.exception.Result
+import org.sopt.and.domain.model.SignUp
 
 internal class UserDataSource @Inject constructor(
-    @UserSharedPreference private val userSharedPreference: SharedPreferences
+    @UserSharedPreference private val userSharedPreference: SharedPreferences,
+    private val userService: UserService
 ) {
 
     var id: String
@@ -20,6 +26,10 @@ internal class UserDataSource @Inject constructor(
         id = DEFAULT_STRING
         password = DEFAULT_STRING
         userSharedPreference.edit().clear().apply()
+    }
+
+    suspend fun signUp(request: SignUpRequest): Result<SignUp> = execute {
+        userService.signUp(request).result.toDomainModel()
     }
 
     companion object {
