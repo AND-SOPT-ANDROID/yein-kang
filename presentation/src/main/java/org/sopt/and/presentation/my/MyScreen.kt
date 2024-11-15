@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +39,7 @@ import androidx.lifecycle.flowWithLifecycle
 import org.sopt.and.presentation.R
 import org.sopt.and.presentation.component.ContentsView
 import org.sopt.and.presentation.component.PairTextView
+import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
 import org.sopt.and.presentation.my.sideeffect.MySideEffect
 import org.sopt.and.presentation.my.viewmodel.MyViewModel
@@ -60,24 +60,29 @@ fun MyScreen(
 
         val state by viewModel.state.collectAsStateWithLifecycle()
 
-        val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current).value
-        val context = rememberUpdatedState(LocalContext.current).value
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val context = LocalContext.current
         val snackBarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(viewModel.intent, lifecycleOwner){
             viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
                 .collect{ intent ->
                     when(intent) {
-                        MySideEffect.LogOut -> {
+                        MySideEffect.Logout -> {
                             viewModel.clearUserPreference()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )
                             onLogout()
                         }
-                        is MySideEffect.SnackBar -> TODO()
+                        is MySideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(intent.message))
+                        is MySideEffect.SnackBarText -> snackBarHostState.showSnackbar(intent.message)
                     }
                 }
+        }
+
+        LaunchedEffect(viewModel.networkState, lifecycleOwner) {
+           collectNetworkState(viewModel)
         }
 
         Row(
@@ -98,7 +103,7 @@ fun MyScreen(
             Spacer(Modifier.width(12.dp))
 
             Text(
-                text = state.id,
+                text = state.hobby,
                 color = White
             )
 
@@ -177,6 +182,22 @@ fun MyScreen(
                     }
                 )
         )
+    }
+}
+
+private suspend fun collectNetworkState(viewModel: MyViewModel) {
+    viewModel.networkState.collect { networkState ->
+        when(networkState){
+            is NetworkState.Loading -> {
+                // TODO 로딩 추가
+            }
+            is NetworkState.Error -> {
+                viewModel.handleMyIntentError(networkState.title + networkState.msg)
+            }
+            is NetworkState.Success -> {
+                // TODO 성공 관련 로직 추가
+            }
+        }
     }
 }
 
