@@ -122,10 +122,27 @@ fun SignUpScreen(
             value = state.password,
             hint = stringResource(R.string.signup_password_hint),
             onValueChange = { viewModel.updatePassword(it) },
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 8.dp),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            )
         )
 
         InfoWithText(R.string.signup_password_guide)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        WavveTextField(
+            value = state.hobby,
+            hint = stringResource(R.string.signup_hobby_hint),
+            onValueChange = { viewModel.updateHobby(it) },
+            modifier = Modifier.padding(horizontal = 8.dp),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            )
+        )
+
+        InfoWithText(R.string.signup_hobby_guide)
 
         Spacer(modifier = Modifier.padding(32.dp))
 

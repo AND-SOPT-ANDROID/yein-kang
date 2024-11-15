@@ -23,6 +23,9 @@ fun WavveActionTextField(
     hint: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        imeAction = ImeAction.Done
+    )
 ){
     var isShowPassword by remember { mutableStateOf(false) }
 
@@ -30,9 +33,7 @@ fun WavveActionTextField(
         value = value,
         hint = hint,
         onValueChange = onValueChange,
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
+        keyboardOptions = keyboardOptions,
         visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
         actionButton = {
             Text(
