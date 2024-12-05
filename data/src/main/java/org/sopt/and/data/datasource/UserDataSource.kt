@@ -3,15 +3,15 @@ package org.sopt.and.data.datasource
 import android.content.SharedPreferences
 import jakarta.inject.Inject
 import org.sopt.and.data.common.execute
-import org.sopt.and.data.di.UserSharedPreference
 import org.sopt.and.data.dto.request.SignUpRequestDto
+import org.sopt.and.data.mapper.toDomainModel
 import org.sopt.and.data.service.UserService
 import org.sopt.and.domain.exception.Result
-import org.sopt.and.domain.model.MyHobbyResponse
-import org.sopt.and.domain.model.SignUpResponse
+import org.sopt.and.domain.model.MyHobby
+import org.sopt.and.domain.model.RegisteredUser
 
 internal class UserDataSource @Inject constructor(
-    @UserSharedPreference private val userSharedPreference: SharedPreferences,
+    private val userSharedPreference: SharedPreferences,
     private val userService: UserService
 ) {
 
@@ -34,11 +34,11 @@ internal class UserDataSource @Inject constructor(
         userSharedPreference.edit().clear().apply()
     }
 
-    suspend fun signUp(request: SignUpRequestDto): Result<SignUpResponse> = execute {
+    suspend fun signUp(request: SignUpRequestDto): Result<RegisteredUser> = execute {
         userService.signUp(request).result.toDomainModel()
     }
 
-    suspend fun getMyHobby(token: String): Result<MyHobbyResponse> = execute {
+    suspend fun getMyHobby(token: String): Result<MyHobby> = execute {
         userService.getMyHobby(token).result.toDomainModel()
     }
 

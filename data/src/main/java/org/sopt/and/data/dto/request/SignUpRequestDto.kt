@@ -9,11 +9,3 @@ internal data class SignUpRequestDto(
     val password: String,
     val username: String
 )
-
-internal fun User.toRequestBody(): SignUpRequestDto {
-    return SignUpRequestDto(
-        hobby = hobby,
-        password = password,
-        username = username
-    )
-}

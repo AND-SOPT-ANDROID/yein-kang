@@ -2,12 +2,12 @@ package org.sopt.and.data.repository
 
 import jakarta.inject.Inject
 import org.sopt.and.data.datasource.UserDataSource
-import org.sopt.and.data.dto.request.toRequestBody
-import org.sopt.and.domain.model.SignUpResponse
+import org.sopt.and.data.mapper.toRequestBody
+import org.sopt.and.domain.model.RegisteredUser
 import org.sopt.and.domain.model.User
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.domain.exception.Result
-import org.sopt.and.domain.model.MyHobbyResponse
+import org.sopt.and.domain.model.MyHobby
 
 internal class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
@@ -29,11 +29,11 @@ internal class UserRepositoryImpl @Inject constructor(
         return userDataSource.token
     }
 
-    override suspend fun signUp(user: User): Result<SignUpResponse> {
+    override suspend fun signUp(user: User): Result<RegisteredUser> {
         return userDataSource.signUp(user.toRequestBody())
     }
 
-    override suspend fun getMyHobby(token: String): Result<MyHobbyResponse> {
+    override suspend fun getMyHobby(token: String): Result<MyHobby> {
         return userDataSource.getMyHobby(token)
     }
 

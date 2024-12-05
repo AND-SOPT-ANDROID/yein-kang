@@ -1,15 +1,9 @@
 package org.sopt.and.data.dto.response
 
 import kotlinx.serialization.Serializable
-import org.sopt.and.domain.model.MyHobbyResponse
+import org.sopt.and.domain.model.MyHobby
 
 @Serializable
-data class MyHobbyResponseDto(
+internal data class MyHobbyResponseDto(
     val hobby: String
-) {
-    fun toDomainModel(): MyHobbyResponse {
-        return MyHobbyResponse(
-            hobby = hobby
-        )
-    }
-}
+)
