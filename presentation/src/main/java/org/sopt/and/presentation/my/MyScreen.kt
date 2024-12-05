@@ -47,6 +47,7 @@ import org.sopt.and.presentation.ui.theme.FirstGrey
 import org.sopt.and.presentation.ui.theme.SecondGrey
 import org.sopt.and.presentation.ui.theme.ThirdGrey
 import org.sopt.and.presentation.ui.theme.White
+import org.sopt.and.presentation.util.KeyUtil.DEFAULT_STRING
 
 @Composable
 fun MyScreen(
@@ -54,6 +55,10 @@ fun MyScreen(
     modifier: Modifier = Modifier,
     viewModel: MyViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(viewModel.state) {
+        if(viewModel.state.value.hobby == DEFAULT_STRING) viewModel.getMyHobby()
+    }
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
