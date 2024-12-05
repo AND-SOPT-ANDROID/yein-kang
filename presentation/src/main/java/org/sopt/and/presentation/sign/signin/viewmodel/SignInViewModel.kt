@@ -23,11 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkDelegate: NetworkDelegate
 ): ViewModel() {
-
-    @Inject
-    lateinit var networkDelegate: NetworkDelegate
 
     private var _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
