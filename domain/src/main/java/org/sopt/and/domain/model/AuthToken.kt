@@ -1,5 +1,5 @@
 package org.sopt.and.domain.model
 
-data class SignInResponse(
+data class AuthToken(
     val token: String
 )

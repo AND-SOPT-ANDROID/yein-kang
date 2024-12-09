@@ -15,7 +15,6 @@ internal object LocalModule {
 
     private const val PREF_NAME = "wavve_prefs"
 
-    @UserSharedPreference
     @Provides
     @Singleton
     fun provideUserSharedPreference(

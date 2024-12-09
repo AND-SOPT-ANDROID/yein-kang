@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.and.domain.exception.NetworkError
 import org.sopt.and.domain.exception.onError
 import org.sopt.and.domain.exception.onSuccess
 import org.sopt.and.domain.model.User
@@ -22,11 +21,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val networkDelegate: NetworkDelegate
 ): ViewModel() {
-
-    @Inject
-    lateinit var networkDelegate: NetworkDelegate
 
     private var _state = MutableStateFlow(SignUpState())
     val state = _state.asStateFlow()

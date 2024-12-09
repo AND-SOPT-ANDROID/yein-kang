@@ -18,7 +18,7 @@ internal object DataSourceModule {
     @Singleton
     @Provides
     fun provideUserDataSource(
-        @UserSharedPreference userSharedPreference: SharedPreferences,
+        userSharedPreference: SharedPreferences,
         userService: UserService
     ): UserDataSource = UserDataSource(userSharedPreference, userService)
 

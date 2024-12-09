@@ -32,10 +32,6 @@ class MyViewModel @Inject constructor(
 
     val networkState get() = networkDelegate.networkState
 
-    init {
-      getMyHobby()
-    }
-
     fun getMyHobby() = viewModelScope.launch {
         val token = userRepository.getToken()
         userRepository.getMyHobby(token).onSuccess { result ->

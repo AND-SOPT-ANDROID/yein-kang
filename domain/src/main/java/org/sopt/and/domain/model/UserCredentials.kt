@@ -1,6 +1,6 @@
 package org.sopt.and.domain.model
 
-data class SignInRequest (
+data class UserCredentials (
     val username: String,
     val password: String
 )

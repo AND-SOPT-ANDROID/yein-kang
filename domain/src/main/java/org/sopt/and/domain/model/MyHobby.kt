@@ -1,5 +1,5 @@
 package org.sopt.and.domain.model
 
-data class MyHobbyResponse(
+data class MyHobby(
     val hobby: String
 )

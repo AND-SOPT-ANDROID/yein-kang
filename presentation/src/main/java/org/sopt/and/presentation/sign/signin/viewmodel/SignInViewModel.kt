@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.exception.onError
 import org.sopt.and.domain.exception.onSuccess
-import org.sopt.and.domain.model.SignInRequest
+import org.sopt.and.domain.model.UserCredentials
 import org.sopt.and.domain.repository.AuthRepository
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.presentation.R
@@ -23,11 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkDelegate: NetworkDelegate
 ): ViewModel() {
-
-    @Inject
-    lateinit var networkDelegate: NetworkDelegate
 
     private var _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
@@ -55,11 +53,11 @@ class SignInViewModel @Inject constructor(
 
     fun signIn() = viewModelScope.launch {
         val currentState = _state.value
-        val signInRequest = SignInRequest(
+        val userCredentials = UserCredentials(
             username = currentState.id,
             password = currentState.password
         )
-        authRepository.signIn(signInRequest).onSuccess {
+        authRepository.signIn(userCredentials).onSuccess {
             networkDelegate.handleNetworkSuccess()
             saveToken(it.token)
         }.onError {
