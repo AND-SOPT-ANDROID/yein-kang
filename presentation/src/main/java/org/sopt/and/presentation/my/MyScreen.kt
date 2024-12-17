@@ -41,6 +41,7 @@ import org.sopt.and.presentation.component.ContentsView
 import org.sopt.and.presentation.component.PairTextView
 import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
+import org.sopt.and.presentation.my.contract.MyEvent
 import org.sopt.and.presentation.my.sideeffect.MySideEffect
 import org.sopt.and.presentation.my.viewmodel.MyViewModel
 import org.sopt.and.presentation.ui.theme.FirstGrey
@@ -55,33 +56,33 @@ fun MyScreen(
     modifier: Modifier = Modifier,
     viewModel: MyViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(viewModel.state) {
-        if(viewModel.state.value.hobby == DEFAULT_STRING) viewModel.getMyHobby()
+    LaunchedEffect(viewModel.uiState) {
+        if(viewModel.uiState.value.hobby == DEFAULT_STRING) viewModel.getMyHobby()
     }
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
 
-        val state by viewModel.state.collectAsStateWithLifecycle()
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
 
         val lifecycleOwner = LocalLifecycleOwner.current
         val context = LocalContext.current
         val snackBarHostState = remember { SnackbarHostState() }
 
-        LaunchedEffect(viewModel.intent, lifecycleOwner){
-            viewModel.intent.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-                .collect{ intent ->
-                    when(intent) {
-                        MySideEffect.Logout -> {
+        LaunchedEffect(viewModel.sideEffect, lifecycleOwner){
+            viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+                .collect{ sideEffect ->
+                    when(sideEffect) {
+                        MySideEffect.NavigateToSignIn -> {
                             viewModel.clearUserPreference()
                             snackBarHostState.showSnackbar(
                                 message = context.getString(R.string.my_logout_text)
                             )
                             onLogout()
                         }
-                        is MySideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(intent.message))
-                        is MySideEffect.SnackBarText -> snackBarHostState.showSnackbar(intent.message)
+                        is MySideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(sideEffect.message))
+                        is MySideEffect.SnackBarText -> snackBarHostState.showSnackbar(sideEffect.message)
                     }
                 }
         }
@@ -183,7 +184,7 @@ fun MyScreen(
                 .align(Alignment.CenterHorizontally)
                 .noRippleClickable(
                     onClick = {
-                        viewModel.onLogOutButtonClick()
+                        viewModel.setEvent(MyEvent.OnLogoutButtonClick)
                     }
                 )
         )
