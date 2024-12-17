@@ -1,13 +1,8 @@
 package org.sopt.and.presentation.sign.signup.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.exception.onError
 import org.sopt.and.domain.exception.onSuccess
@@ -15,38 +10,41 @@ import org.sopt.and.domain.model.User
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.presentation.R
 import org.sopt.and.presentation.delegate.NetworkDelegate
-import org.sopt.and.presentation.sign.signup.intent.SignUpSideEffect
-import org.sopt.and.presentation.sign.signup.model.SignUpState
+import org.sopt.and.presentation.sign.signup.contract.SignUpEvent
+import org.sopt.and.presentation.sign.signup.contract.SignUpSideEffect
+import org.sopt.and.presentation.sign.signup.contract.SignUpState
+import org.sopt.and.presentation.util.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val networkDelegate: NetworkDelegate
-): ViewModel() {
-
-    private var _state = MutableStateFlow(SignUpState())
-    val state = _state.asStateFlow()
-
-    private var _intent = MutableSharedFlow<SignUpSideEffect>()
-    val intent = _intent.asSharedFlow()
+): BaseViewModel<SignUpState, SignUpEvent, SignUpSideEffect>() {
 
     val networkState get() = networkDelegate.networkState
 
-    fun updateId(id: String) = _state.update {
-        it.copy(id = id)
-    }
+    override fun createInitialState(): SignUpState = SignUpState()
 
-    fun updatePassword(password: String) = _state.update {
-        it.copy(password = password)
-    }
-
-    fun updateHobby(hobby: String) = _state.update {
-        it.copy(hobby = hobby)
+    override suspend fun handleEvent(event: SignUpEvent) {
+        when(event) {
+            is SignUpEvent.OnIdChanged -> {
+                setState { copy(id = event.id) }
+            }
+            is SignUpEvent.OnPasswordChanged -> {
+                setState { copy(password = event.password) }
+            }
+            is SignUpEvent.OnHobbyChanged -> {
+                setState { copy(hobby = event.hobby) }
+            }
+            SignUpEvent.OnSignUpButtonClick -> {
+                signUp()
+            }
+        }
     }
 
     fun signUp() = viewModelScope.launch {
-        val currentState = _state.value
+        val currentState = uiState.value
         val user = User(
             username = currentState.id,
             password = currentState.password,
@@ -54,18 +52,23 @@ class SignUpViewModel @Inject constructor(
         )
         userRepository.signUp(user).onSuccess {
             networkDelegate.handleNetworkSuccess()
+            navigateToSignIn()
         }.onError {
             networkDelegate.handleSignUpError(it)
         }
     }
 
-    suspend fun handleSignUpIntentError(message: String) {
-        _intent.emit(SignUpSideEffect.SnackBarText(message))
+    private fun navigateToSignIn() = viewModelScope.launch {
+        delay(100)
+        setSideEffect(SignUpSideEffect.NavigateToSignIn)
     }
 
-    suspend fun handleSignUpIntentSuccess() {
-        _intent.emit(SignUpSideEffect.SnackBar(R.string.signup_success_text))
-        _intent.emit(SignUpSideEffect.SignUp)
+    fun handleSignUpIntentError(message: String) = viewModelScope.launch {
+        setSideEffect(SignUpSideEffect.SnackBarText(message))
+    }
+
+    fun handleSignUpIntentSuccess() = viewModelScope.launch {
+        setSideEffect(SignUpSideEffect.SnackBar(R.string.signup_success_text))
     }
 
 }

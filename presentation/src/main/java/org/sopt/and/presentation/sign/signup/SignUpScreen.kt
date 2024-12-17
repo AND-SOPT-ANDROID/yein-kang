@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
 import org.sopt.and.presentation.R
 import org.sopt.and.presentation.component.CloseTopBar
 import org.sopt.and.presentation.component.DividerWithText
@@ -39,7 +37,8 @@ import org.sopt.and.presentation.component.WavveActionTextField
 import org.sopt.and.presentation.component.WavveTextField
 import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
-import org.sopt.and.presentation.sign.signup.intent.SignUpSideEffect
+import org.sopt.and.presentation.sign.signup.contract.SignUpEvent
+import org.sopt.and.presentation.sign.signup.contract.SignUpSideEffect
 import org.sopt.and.presentation.sign.signup.viewmodel.SignUpViewModel
 import org.sopt.and.presentation.ui.theme.ThirdGrey
 import org.sopt.and.presentation.ui.theme.White
@@ -53,24 +52,17 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(viewModel.intent) {
-        viewModel.intent.collect {  intent ->
-            when(intent) {
-                SignUpSideEffect.SignUp -> {
-                    navigationToSignIn(state.id, state.password)
-                }
-                is SignUpSideEffect.SnackBar -> {
-                    snackBarHostState.showSnackbar(context.getString(intent.message))
-                }
-
-                is SignUpSideEffect.SnackBarText -> {
-                    snackBarHostState.showSnackbar(intent.message)
-                }
+    LaunchedEffect(viewModel.sideEffect) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when(sideEffect) {
+                is SignUpSideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(sideEffect.message))
+                is SignUpSideEffect.SnackBarText -> snackBarHostState.showSnackbar(sideEffect.message)
+                SignUpSideEffect.NavigateToSignIn -> navigationToSignIn(state.id, state.password)
             }
         }
     }
@@ -122,7 +114,7 @@ fun SignUpScreen(
         WavveTextField(
             value = state.id,
             hint = stringResource(R.string.signup_login_hint),
-            onValueChange = { viewModel.updateId(it) },
+            onValueChange = { viewModel.setEvent(SignUpEvent.OnIdChanged(it)) },
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -133,7 +125,7 @@ fun SignUpScreen(
         WavveActionTextField(
             value = state.password,
             hint = stringResource(R.string.signup_password_hint),
-            onValueChange = { viewModel.updatePassword(it) },
+            onValueChange = { viewModel.setEvent(SignUpEvent.OnPasswordChanged(it)) },
             modifier = Modifier.padding(horizontal = 8.dp),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -147,7 +139,7 @@ fun SignUpScreen(
         WavveTextField(
             value = state.hobby,
             hint = stringResource(R.string.signup_hobby_hint),
-            onValueChange = { viewModel.updateHobby(it) },
+            onValueChange = { viewModel.setEvent(SignUpEvent.OnHobbyChanged(it)) },
             modifier = Modifier.padding(horizontal = 8.dp),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
