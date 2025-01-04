@@ -54,7 +54,7 @@ class MyViewModel @Inject constructor(
         userRepository.clearUserPreference()
     }
 
-    fun handleMyIntentError(message: String) = viewModelScope.launch {
+    fun handleMyIntentError(message: String) {
         setSideEffect(MySideEffect.SnackBarText(message))
     }
 

@@ -63,11 +63,11 @@ class SignUpViewModel @Inject constructor(
         setSideEffect(SignUpSideEffect.NavigateToSignIn)
     }
 
-    fun handleSignUpIntentError(message: String) = viewModelScope.launch {
+    fun handleSignUpIntentError(message: String) {
         setSideEffect(SignUpSideEffect.SnackBarText(message))
     }
 
-    fun handleSignUpIntentSuccess() = viewModelScope.launch {
+    fun handleSignUpIntentSuccess() {
         setSideEffect(SignUpSideEffect.SnackBar(R.string.signup_success_text))
     }
 
