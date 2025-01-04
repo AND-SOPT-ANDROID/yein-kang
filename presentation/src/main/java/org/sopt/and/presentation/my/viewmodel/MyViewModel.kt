@@ -28,7 +28,7 @@ class MyViewModel @Inject constructor(
                 navigateToSignIn()
             }
             is MyEvent.GetMyHobby -> {
-                getMyHobby()
+                setState { copy(hobby = event.hobby) }
             }
         }
     }
@@ -38,7 +38,7 @@ class MyViewModel @Inject constructor(
     fun getMyHobby() = viewModelScope.launch {
         val token = userRepository.getToken()
         userRepository.getMyHobby(token).onSuccess { result ->
-            setState { copy(hobby = result.hobby) }
+            setEvent(MyEvent.GetMyHobby(result.hobby))
             networkDelegate.handleNetworkSuccess()
         }.onError {
             networkDelegate.handleGetMyHobbyError(it)
