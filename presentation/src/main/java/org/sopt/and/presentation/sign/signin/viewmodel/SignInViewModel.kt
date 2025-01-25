@@ -1,13 +1,8 @@
 package org.sopt.and.presentation.sign.signin.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sopt.and.domain.exception.onError
 import org.sopt.and.domain.exception.onSuccess
@@ -16,8 +11,10 @@ import org.sopt.and.domain.repository.AuthRepository
 import org.sopt.and.domain.repository.UserRepository
 import org.sopt.and.presentation.R
 import org.sopt.and.presentation.delegate.NetworkDelegate
-import org.sopt.and.presentation.sign.signin.model.SignInState
-import org.sopt.and.presentation.sign.signin.sideeffect.SignInSideEffect
+import org.sopt.and.presentation.sign.signin.contract.SignInEvent
+import org.sopt.and.presentation.sign.signin.contract.SignInState
+import org.sopt.and.presentation.sign.signin.contract.SignInSideEffect
+import org.sopt.and.presentation.util.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,34 +22,35 @@ class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
     private val networkDelegate: NetworkDelegate
-): ViewModel() {
+): BaseViewModel<SignInState, SignInEvent, SignInSideEffect>() {
 
-    private var _state = MutableStateFlow(SignInState())
-    val state = _state.asStateFlow()
+    override fun createInitialState(): SignInState = SignInState()
 
-    private var _intent = MutableSharedFlow<SignInSideEffect>()
-    val intent = _intent.asSharedFlow()
+    override suspend fun handleEvent(event: SignInEvent) {
+        when(event) {
+            is SignInEvent.OnIdChanged -> {
+                setState { copy(id = event.id) }
+            }
+            is SignInEvent.OnPasswordChanged -> {
+                setState { copy(password = event.password) }
+            }
+            SignInEvent.OnSignInButtonClick -> {
+                signIn()
+            }
+            SignInEvent.OnSignUpButtonClick -> {
+                navigateToSignUp()
+            }
+        }
+    }
 
     val networkState get() = networkDelegate.networkState
-
-    fun saveUser(id: String, password: String){
-        userRepository.saveUser(id, password)
-    }
 
     private fun saveToken(token: String){
         userRepository.saveToken(token)
     }
 
-    fun updateId(id: String) = _state.update {
-        it.copy(id = id)
-    }
-
-    fun updatePassword(password: String) = _state.update {
-        it.copy(password = password)
-    }
-
     fun signIn() = viewModelScope.launch {
-        val currentState = _state.value
+        val currentState = uiState.value
         val userCredentials = UserCredentials(
             username = currentState.id,
             password = currentState.password
@@ -60,22 +58,27 @@ class SignInViewModel @Inject constructor(
         authRepository.signIn(userCredentials).onSuccess {
             networkDelegate.handleNetworkSuccess()
             saveToken(it.token)
+            navigateToMy()
         }.onError {
             networkDelegate.handleSignInError(it)
         }
     }
 
-    fun onSignUpButtonClick() = viewModelScope.launch {
-        _intent.emit(SignInSideEffect.SignUp)
+    private fun navigateToSignUp() = viewModelScope.launch {
+        setSideEffect(SignInSideEffect.NavigateToSignUp)
     }
 
-    suspend fun handleSignInIntentError(message: String) {
-        _intent.emit(SignInSideEffect.SnackBarText(message))
+    private fun navigateToMy() = viewModelScope.launch {
+        delay(100)
+        setSideEffect(SignInSideEffect.NavigateToMy)
     }
 
-    suspend fun handleSignInIntentSuccess() {
-        _intent.emit(SignInSideEffect.SnackBar(R.string.signin_success_text))
-        _intent.emit(SignInSideEffect.SignIn)
+    fun handleSignInSideEffectError(message: String) {
+        setSideEffect(SignInSideEffect.SnackBarText(message))
+    }
+
+    fun handleSignInSideEffectSuccess() {
+        setSideEffect(SignInSideEffect.SnackBar(R.string.signin_success_text))
     }
 
 }

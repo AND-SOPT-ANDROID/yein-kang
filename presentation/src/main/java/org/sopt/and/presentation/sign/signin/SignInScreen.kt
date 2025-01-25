@@ -37,7 +37,8 @@ import org.sopt.and.presentation.component.WavveActionTextField
 import org.sopt.and.presentation.component.WavveTextField
 import org.sopt.and.presentation.delegate.NetworkState
 import org.sopt.and.presentation.extension.noRippleClickable
-import org.sopt.and.presentation.sign.signin.sideeffect.SignInSideEffect
+import org.sopt.and.presentation.sign.signin.contract.SignInEvent
+import org.sopt.and.presentation.sign.signin.contract.SignInSideEffect
 import org.sopt.and.presentation.sign.signin.viewmodel.SignInViewModel
 import org.sopt.and.presentation.ui.theme.FirstGrey
 import org.sopt.and.presentation.ui.theme.SecondGrey
@@ -56,20 +57,21 @@ fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ){
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val context = rememberUpdatedState(LocalContext.current).value
     val snackBarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(viewModel.intent) {
-       viewModel.intent.collect{ intent ->
-           when(intent) {
-               SignInSideEffect.SignIn -> {
-                   viewModel.saveUser(state.id, state.password)
+    LaunchedEffect(viewModel.sideEffect) {
+       viewModel.sideEffect.collect{ sideEffect ->
+           when(sideEffect) {
+               is SignInSideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(sideEffect.message))
+               is SignInSideEffect.SnackBarText -> snackBarHostState.showSnackbar(sideEffect.message)
+               SignInSideEffect.NavigateToSignUp -> {
+                   navigateToSignUp()
+               }
+               SignInSideEffect.NavigateToMy -> {
                    navigateToMy()
                }
-               SignInSideEffect.SignUp -> navigateToSignUp()
-               is SignInSideEffect.SnackBar -> snackBarHostState.showSnackbar(context.getString(intent.message))
-               is SignInSideEffect.SnackBarText -> snackBarHostState.showSnackbar(intent.message)
            }
        }
     }
@@ -93,7 +95,9 @@ fun SignInScreen(
         WavveTextField(
             value = state.id,
             hint = stringResource(R.string.signup_login_hint),
-            onValueChange = viewModel::updateId,
+            onValueChange = {
+                viewModel.setEvent(SignInEvent.OnIdChanged(it))
+            },
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -102,7 +106,9 @@ fun SignInScreen(
         WavveActionTextField(
             value = state.password,
             hint = stringResource(R.string.signin_password_hint),
-            onValueChange = viewModel::updatePassword,
+            onValueChange = {
+                viewModel.setEvent(SignInEvent.OnPasswordChanged(it))
+            },
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
@@ -175,7 +181,7 @@ fun SignInScreen(
                 modifier = Modifier
                     .noRippleClickable(
                         onClick = {
-                            viewModel.onSignUpButtonClick()
+                            viewModel.setEvent(SignInEvent.OnSignUpButtonClick)
                         }
                     )
             )
@@ -214,10 +220,10 @@ private suspend fun collectNetworkState(viewModel: SignInViewModel) {
                 // TODO 로딩 추가
             }
             is NetworkState.Error -> {
-                viewModel.handleSignInIntentError(networkState.title + networkState.msg)
+                viewModel.handleSignInSideEffectError(networkState.title + networkState.msg)
             }
             is NetworkState.Success -> {
-                viewModel.handleSignInIntentSuccess()
+                viewModel.handleSignInSideEffectSuccess()
             }
         }
     }
